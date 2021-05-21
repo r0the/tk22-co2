@@ -1,0 +1,13 @@
+body {
+    margin: 0%;
+}
+
+.inline-image {
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+nav {
+    background-color: rgb(4, 4, 161);
+    text-align: flex-start;
+}
