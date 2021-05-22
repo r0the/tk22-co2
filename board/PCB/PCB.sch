@@ -68,8 +68,6 @@ F 3 "~" H 2850 4650 50  0001 C CNN
 	1    2850 4650
 	0    1    1    0   
 $EndComp
-Text Notes 7050 6850 0    50   ~ 10
-Achtung: Lolin und die andern Komponenten,\ndie auf die Rückseite sollen sind nicht spiegelverkehrt!\n->> Gelöst
 $Comp
 L 1.3_OLED_v.1.0:1.3"OLED_Display P2
 U 1 1 60994766
@@ -93,10 +91,10 @@ F 3 "" H 2900 3050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SCD30:SCD30_back U1
+L SCD30:SCD30_back IC1
 U 1 1 6099312B
 P 8250 5400
-F 0 "U1" H 8022 5354 50  0000 R CNN
+F 0 "IC1" H 8022 5354 50  0000 R CNN
 F 1 "SCD30_back" H 8022 5445 50  0000 R CNN
 F 2 "MODULE_SCD30:MODULE_SCD30_back" H 8050 5450 50  0001 L BNN
 F 3 "" H 8050 5450 50  0001 L BNN
@@ -286,7 +284,7 @@ Wire Wire Line
 Wire Wire Line
 	3200 2000 3200 1700
 Wire Wire Line
-	3200 1700 2250 1700
+	3200 1700 2400 1700
 Wire Wire Line
 	2250 1700 2250 3300
 Wire Wire Line
@@ -298,7 +296,7 @@ Wire Wire Line
 Wire Wire Line
 	3700 2950 3700 2600
 Wire Wire Line
-	3700 2600 3200 2600
+	3700 2600 3300 2600
 Wire Wire Line
 	3000 4650 3100 4650
 Wire Wire Line
@@ -309,7 +307,7 @@ Wire Wire Line
 	2250 4800 2250 3300
 Connection ~ 2250 3300
 Wire Wire Line
-	7950 4600 7300 4600
+	7950 4600 7850 4600
 Wire Wire Line
 	7300 4600 7300 5100
 Wire Wire Line
@@ -338,8 +336,6 @@ Connection ~ 3700 2600
 Wire Wire Line
 	3100 3300 4300 3300
 Wire Wire Line
-	4300 2600 4800 2600
-Wire Wire Line
 	4300 3300 4300 2600
 Connection ~ 7300 5100
 Wire Wire Line
@@ -359,25 +355,78 @@ Wire Wire Line
 	6650 2600 6650 2050
 Wire Wire Line
 	6650 2050 4200 2050
+Wire Wire Line
+	5150 2600 4750 2600
 $Comp
-L Connector:Conn_01x02_Female J1
-U 1 1 60A2DD2C
-P 4800 2150
-F 0 "J1" V 4738 1962 50  0000 R CNN
-F 1 "Conn_01x02_Female" V 4647 1962 50  0000 R CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 4800 2150 50  0001 C CNN
-F 3 "~" H 4800 2150 50  0001 C CNN
-	1    4800 2150
-	0    -1   -1   0   
+L Connector:Conn_01x01_Male J1
+U 1 1 60A95CB2
+P 4500 2400
+F 0 "J1" V 4562 2444 50  0000 L CNN
+F 1 "GND_Out_1" V 4650 2000 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4500 2400 50  0001 C CNN
+F 3 "~" H 4500 2400 50  0001 C CNN
+	1    4500 2400
+	0    1    1    0   
+$EndComp
+Connection ~ 4500 2600
+Wire Wire Line
+	4500 2600 4300 2600
+$Comp
+L Connector:Conn_01x01_Male J2
+U 1 1 60A97242
+P 4750 2400
+F 0 "J2" V 4812 2444 50  0000 L CNN
+F 1 "GND-Out_2" V 4900 2400 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4750 2400 50  0001 C CNN
+F 3 "~" H 4750 2400 50  0001 C CNN
+	1    4750 2400
+	0    1    1    0   
+$EndComp
+Connection ~ 4750 2600
+Wire Wire Line
+	4750 2600 4500 2600
+$Comp
+L Device:C_Small C1
+U 1 1 60A9D12C
+P 2400 2300
+F 0 "C1" H 2492 2346 50  0000 L CNN
+F 1 "0.1uF_Capacitor" H 2492 2255 50  0000 L CNN
+F 2 "Capacitor_THT:C_Axial_L3.8mm_D2.6mm_P10.00mm_Horizontal" H 2400 2300 50  0001 C CNN
+F 3 "~" H 2400 2300 50  0001 C CNN
+	1    2400 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C2
+U 1 1 60A9E4CE
+P 7950 4800
+F 0 "C2" H 7858 4754 50  0000 R CNN
+F 1 "0.1uF_Capacitor" H 7858 4845 50  0000 R CNN
+F 2 "Capacitor_THT:C_Axial_L3.8mm_D2.6mm_P10.00mm_Horizontal" H 7950 4800 50  0001 C CNN
+F 3 "~" H 7950 4800 50  0001 C CNN
+	1    7950 4800
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	4900 2350 4900 2600
-Connection ~ 4900 2600
+	7850 4900 7950 4900
+Connection ~ 7850 4600
 Wire Wire Line
-	4900 2600 5150 2600
+	7850 4600 7300 4600
 Wire Wire Line
-	4800 2350 4800 2600
-Connection ~ 4800 2600
+	2400 1700 2400 2200
+Connection ~ 2400 1700
 Wire Wire Line
-	4800 2600 4900 2600
+	2400 1700 2250 1700
+Wire Wire Line
+	3300 2600 3300 2700
+Wire Wire Line
+	3300 2700 2400 2700
+Wire Wire Line
+	2400 2700 2400 2400
+Connection ~ 3300 2600
+Wire Wire Line
+	3300 2600 3200 2600
+Connection ~ 7950 4700
+Wire Wire Line
+	7850 4600 7850 4900
 $EndSCHEMATC
