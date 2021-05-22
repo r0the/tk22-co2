@@ -1,15 +1,14 @@
 import machine
 import utime
 
-buzzer = machine.Pin(26, machine.Pin.OUT)
+_buzzer_pin = machine.Pin(26, machine.Pin.OUT)
+_buzzer_pwm = None
 
-buzzer_pwm = None
-
-b = 2**(1/12)
+b = 2 ** (1 / 12)
 a = 220
 frequency = a
 
-melody_index=7
+melody_index = 7
 melody = "melody/melody" + str(melody_index) + ".txt"
 melody_file = None
 
@@ -21,35 +20,33 @@ wecker_utime = jetzt
 speed = 60
 
 def buzzer_off():
-    global buzzer_pwm
-    if buzzer_pwm:
-        buzzer_pwm.deinit()
-        buzzer_pwm = None
+    global _buzzer_pwm
+    if _buzzer_pwm:
+        _buzzer_pwm.deinit()
+        _buzzer_pwm = None
 
 def buzzer_play(freq):
-    global buzzer_pwm
-    if not buzzer_pwm:
-        buzzer_pwm = machine.PWM(buzzer)
-    buzzer_pwm.freq(freq)
-    buzzer_pwm.duty(1)
-    
+    global _buzzer_pwm
+    if not _buzzer_pwm:
+        _buzzer_pwm = machine.PWM(_buzzer_pin)
+    _buzzer_pwm.freq(freq)
+    _buzzer_pwm.duty(1)
+
 def update_buzzer(element):
     play_tone(element)
-        
+
 def play_tone(tone):
     if int(tone[2]) == 0:
         buzzer_off()
     else:
-        frequency = int(a*(b**(int(tone[0])+3)))
+        frequency = int(a * (b ** (int(tone[0]) + 3)))
         buzzer_play(frequency)
-        
+
 def update_melody(state, activated, play, last_play, stupid_user, melody_index, melody_changed):
     global wecker_utime
     global speed
     global melody_file
-    
     jetzt = utime.ticks_ms()
-    
     melody="melody/melody" + str(melody_index) + ".txt"
     
     if melody_changed:
@@ -61,7 +58,7 @@ def update_melody(state, activated, play, last_play, stupid_user, melody_index, 
     
     if state != 2 or not play or not activated and not stupid_user:
         buzzer_off()
-    if utime.ticks_diff(wecker_utime, jetzt)<=0 and play and state==2 and activated:
+    if utime.ticks_diff(wecker_utime, jetzt) <= 0 and play and state == 2 and activated:
         element = melody_file.readline()
         element = element.replace('\n', '')
         element = element.split(' ')
@@ -69,12 +66,11 @@ def update_melody(state, activated, play, last_play, stupid_user, melody_index, 
             melody_file.close()
             melody_file = None
         else:
-            if len(element)==3:
+            if len(element) == 3:
                 update_buzzer(element)    
-                wecker=round(float(element[1])*1000*60)//speed
-                wecker_utime=utime.ticks_add(jetzt, wecker)
-            elif len(element)==1:
-                speed=int(element[0])
-                wecker=0
-                wecker_utime=utime.ticks_add(jetzt, wecker)
-                
+                wecker = round(float(element[1]) * 1000 * 60) // speed
+                wecker_utime = utime.ticks_add(jetzt, wecker)
+            elif len(element) == 1:
+                speed = int(element[0])
+                wecker = 0
+                wecker_utime = utime.ticks_add(jetzt, wecker)

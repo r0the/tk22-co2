@@ -251,22 +251,22 @@ while True:
         elif setting==1:
             krispplay.fill(0)
             draw_menuline("None", 0, position == 0, 3)
-            draw_menuline(melodies_text[index-1], 1, position == 1, 3)
+            draw_menuline(melodies_text[index - 1], 1, position == 1, 3)
             draw_menuline(melodies_text[index], 2, position == 2, 3)
             if position > 2:
                 position = 2
             if position < 0:
                 position = 2
             if joystick.down_pressed():
-                position+=1
+                position += 1
                 if position > 2:
-                    index+=1
+                    index += 1
             if joystick.up_pressed():
-                position-=1
-            if index<0:
-                index=highest_index
-            if index>highest_index:
-                index=0
+                position -= 1
+            if index < 0:
+                index = highest_index
+            if index > highest_index:
+                index = 0
             if joystick.center_pressed():
                 if position == 0:
                     if make_exception:
@@ -277,45 +277,45 @@ while True:
                     else:
                         activated = False
                 else:
-                    melody_index=(index+position-2) % 7
+                    melody_index = (index + position - 2) % 7
                     play = True
                     activated = True
                     melody_changed = True
-                setting=4
-                i=0
+                setting = 4
+                i = 0
                 save_config()
             if joystick.left_pressed() or joystick.right_pressed():
-                setting=4
+                setting = 4
                 alarm = False
-                index=1
-                position=0
-        elif setting==2:
+                index = 1
+                position = 0
+        elif setting == 2:
             krispplay.fill(0)
-            text="Sleeptime: " + str(sleeptime//1000) + " s"
-            y=hoehe//2-9
-            krispplay.text(text, (breite-len(text)*8)//2, y)
-            text="Snooze: " + str(alarm_wait//1000) + " s"
-            krispplay.text(text, (breite-len(text)*8)//2, y+10)
+            text = "Sleeptime: " + str(sleeptime // 1000) + " s"
+            y=hoehe // 2 - 9
+            krispplay.text(text, (breite - len(text) * 8) // 2, y)
+            text = "Snooze: " + str(alarm_wait // 1000) + " s"
+            krispplay.text(text, (breite - len(text) * 8) // 2, y + 10)
             if joystick.up():
-                sleeptime+=1000
+                sleeptime += 1000
             if joystick.down():
-                sleeptime-=1000
-            if sleeptime<10000:
-                sleeptime=10000
-            if sleeptime>120000:
-                sleeptime=120000
+                sleeptime -= 1000
+            if sleeptime < 10000:
+                sleeptime = 10000
+            if sleeptime > 120000:
+                sleeptime = 120000
             if joystick.right():
-                alarm_wait+=1000
+                alarm_wait += 1000
             if joystick.left():
-                alarm_wait-=1000
-            if alarm_wait<10000:
-                alarm_wait=10000
-            if alarm_wait>3600000:
-                alarm_wait=3600000
+                alarm_wait -= 1000
+            if alarm_wait < 10000:
+                alarm_wait = 10000
+            if alarm_wait > 3600000:
+                alarm_wait = 3600000
             if joystick.center_pressed():
-                setting=4
+                setting = 4
                 save_config()
-        elif setting==3:
+        elif setting == 3:
             if not standalone:
                 """if look==0 and locked:
                     krispplay.fill(0)
@@ -372,17 +372,17 @@ while True:
 
             else:
                 krispplay.fill(0)
-                y=hoehe//2 - 19
-                text='v' + version
-                krispplay.text(text, (breite-len(text)*8)//2, y)
-                text='product' + production_number
-                krispplay.text(text, (breite-len(text)*8)//2, y+10)
-                text=product
-                krispplay.text(text, (breite-len(text)*8)//2, y+20)
-                text="TK22"
-                krispplay.text(text, (breite-len(text)*8)//2, y+30)
+                y = hoehe // 2 - 19
+                text = 'v' + version
+                krispplay.text(text, (breite - len(text) * 8) // 2, y)
+                text = 'product' + production_number
+                krispplay.text(text, (breite - len(text) * 8) // 2, y + 10)
+                text = product
+                krispplay.text(text, (breite - len(text) * 8) // 2, y + 20)
+                text = "TK22"
+                krispplay.text(text, (breite - len(text) * 8) // 2, y + 30)
                 if joystick.center_pressed():
-                    setting=4
+                    setting = 4
 
     elif i == 2 and not stupid_user:
         krispplay.fill(0)
@@ -402,25 +402,25 @@ while True:
     elif i < 0 or i > 3:
         if not d:
             Zeit=utime.ticks_add(jetzt, 5000)
-            d=True
-        krispplay.text("ERROR", breite//2 - 20, hoehe//2 - 4)
-        if utime.ticks_diff(jetzt, Zeit)>=0:
-            i=0
-            d=False
+            d = True
+        krispplay.text("ERROR", breite // 2 - 20, hoehe // 2 - 4)
+        if utime.ticks_diff(jetzt, Zeit) >= 0:
+            i = 0
+            d = False
     if joystick.any():
-        if utime.ticks_diff(jetzt, last)>0 and i == 3:
-            i=0
+        if utime.ticks_diff(jetzt, last) > 0 and i == 3:
+            i = 0
         last=utime.ticks_add(jetzt, sleeptime)
-        if state==2 and play:
-            last_pressed=utime.ticks_add(jetzt, alarm_wait)
-            play=False
+        if state == 2 and play:
+            last_pressed = utime.ticks_add(jetzt, alarm_wait)
+            play = False
     if joystick.center_pressed():
-        start=utime.ticks_add(jetzt, 50_000)
+        start = utime.ticks_add(jetzt, 50_000)
     if joystick.center() and utime.ticks_diff(jetzt, start) > 0:
         machine.reset()
-    if utime.ticks_diff(jetzt, last_pressed)>0 and not play:
-        play=True
-    if utime.ticks_diff(jetzt, last)>0 and i != 3:
+    if utime.ticks_diff(jetzt, last_pressed) > 0 and not play:
+        play = True
+    if utime.ticks_diff(jetzt, last) > 0 and i != 3:
         i=3
 
     if not done:
