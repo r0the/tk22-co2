@@ -51,9 +51,7 @@ jetzt = utime.ticks_ms()
 last = utime.ticks_add(jetzt, sleeptime)
 last_pressed = utime.ticks_add(jetzt, alarm_wait)
 
-melodies_text = music.melodies_text
 melody_index = 7
-highest_index = len(melodies_text)-1
 melody_changed=False
 
 stupid_user = False
@@ -246,9 +244,10 @@ while True:
                 save_config()
         elif setting==1:
             krispplay.fill(0)
+            highest_index = len(music.melodies_text) - 1
             draw_menuline("None", 0, position == 0, 3)
-            draw_menuline(melodies_text[index - 1], 1, position == 1, 3)
-            draw_menuline(melodies_text[index], 2, position == 2, 3)
+            draw_menuline(music.melodies_text[index - 1], 1, position == 1, 3)
+            draw_menuline(music.melodies_text[index], 2, position == 2, 3)
             if position > 2:
                 position = 2
             if position < 0:
