@@ -93,7 +93,7 @@ display.startup(version, product)
 # LEDs testen
 for i in range(3):
     leds.update(i)
-    time.sleep(1)
+    utime.sleep(1)
 krispplay.fill(0)
 krispplay.show()
 
@@ -119,7 +119,7 @@ def update_state():
         state = 1
     if unterschwelle_gelb > co2 and state == 1:
         state = 0
-    leds.update_led(state)
+    leds.update(state)
 
 def check_password(check):
     if not locked:
