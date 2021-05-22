@@ -172,7 +172,7 @@ while True:
     melody_changed = False
 
     if i == 0 and not stupid_user:
-        krispplay.fill(0)
+        display.clear()
         krispplay.text(product, 4, 52)
         draw_menuline("Luftqualitaet", 0, m == 0, 3)
         draw_menuline("div. Messw.", 1, m == 1, 3)
@@ -193,7 +193,7 @@ while True:
             i = 3
     elif i == 1 and not stupid_user:
         if setting==4:
-            krispplay.fill(0)
+            display.clear()
             draw_menuline("Grenzwerte", 0, s == 0, 4)
             draw_menuline("Alarm", 1, s == 1, 4)
             draw_menuline("Zeiten", 2, s == 2, 4)
@@ -214,7 +214,7 @@ while True:
             if joystick.right_pressed() or joystick.left_pressed():
                 i=0
         elif setting==0:
-            krispplay.fill(0)
+            display.clear()
             krispplay.text( "Rot: " + str(grenzwert_rot) + " ppm", breite//2 - 55, 18)
             krispplay.text( "Gelb: " + str(grenzwert_gelb) + " ppm", breite//2 - 55, 38)
             if joystick.up():
@@ -241,7 +241,7 @@ while True:
                 setting=4
                 save_config()
         elif setting==1:
-            krispplay.fill(0)
+            display.clear()
             highest_index = len(music.melodies_text) - 1
             draw_menuline("None", 0, position == 0, 3)
             draw_menuline(music.melodies_text[index - 1], 1, position == 1, 3)
@@ -283,7 +283,7 @@ while True:
                 index = 1
                 position = 0
         elif setting == 2:
-            krispplay.fill(0)
+            display.clear()
             text = "Sleeptime: " + str(sleeptime // 1000) + " s"
             y=hoehe // 2 - 9
             krispplay.text(text, (breite - len(text) * 8) // 2, y)
@@ -364,7 +364,7 @@ while True:
                         setting=4"""
 
             else:
-                krispplay.fill(0)
+                display.clear()
                 y = hoehe // 2 - 19
                 text = 'v' + version
                 krispplay.text(text, (breite - len(text) * 8) // 2, y)
@@ -378,7 +378,7 @@ while True:
                     setting = 4
 
     elif i == 2 and not stupid_user:
-        krispplay.fill(0)
+        display.clear()
         draw_segments(sensor.humidity, 124 - segment_length - 2*segment_width)
         draw_segments(sensor.temperature, 4 + segment_length + 4*segment_width)
         krispplay.text("%", 116, 50)
@@ -387,7 +387,7 @@ while True:
         if joystick.any_pressed():
             i = 0
     elif i == 3 and not stupid_user:
-        krispplay.fill(0)
+        display.clear()
         draw_segments(sensor.co2, 124 - segment_length - 2*segment_width)
         krispplay.text("ppm CO2", 68, 50)
         if joystick.any_pressed():
