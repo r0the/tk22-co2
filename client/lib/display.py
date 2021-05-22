@@ -29,27 +29,25 @@ miso = machine.Pin(19)
 spi = machine.SPI(1, sck=sck, mosi=mosi, miso=miso)
 
 krispplay = sh1106.SH1106_SPI(128, 64, spi, dc, res, cs)
+krispplay.rotate(True)
 
 def startup(version, product):
     clear()
-    y=hoehe//2-18
-    text="TK22"
-    krispplay.text(text, (breite-len(text)*8)//2, y)
-    text="CO2-Messgeraet"
-    krispplay.text(text, (breite-len(text)*8)//2, y+10)
-    text="v" + version
-    krispplay.text(text, (breite-len(text)*8)//2, y+20)
-    text=product
-    krispplay.text(text, (breite-len(text)*8)//2, y+30)
-    krispplay.rotate(True)
+    y = hoehe // 2 - 18
+    text_center("TK22", y)
+    text_center("CO2-Messgeraet", y + 10)
+    text_center("v" + version, y + 20)
+    text_center(product, y + 30)
     krispplay.show()
     time.sleep(2.5)
-
     clear()
-    krispplay.show()
+    show()
 
 def text_center(text, y):
     krispplay.text(text, (breite - len(text) * 8) // 2, y)
+
+def show():
+    krispplay.show()
 
 def clear():
     krispplay.fill(0)

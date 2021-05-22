@@ -85,8 +85,8 @@ sensor = scd30.EasySCD30(i2c)
 display.startup(version, product)
 # LEDs testen
 leds.startup()
-krispplay.fill(0)
-krispplay.show()
+display.clear()
+display.show()
 
 
 def StupidUserException():
@@ -414,4 +414,4 @@ while True:
         load_config()
         done=True
 
-    krispplay.show()
+    display.show()
