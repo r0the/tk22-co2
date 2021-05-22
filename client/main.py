@@ -56,9 +56,6 @@ melody_index = 7
 highest_index = len(melodies_text)-1
 melody_changed=False
 
-play = True
-last_play = True
-
 stupid_user = False
 make_exception = False
 expire = jetzt
@@ -175,8 +172,7 @@ while True:
     unterschwelle_gelb = grenzwert_gelb * 0.9
     unterschwelle_rot = grenzwert_rot * 0.9
     update_state()
-    last_play=play
-    music.update_melody(state, activated, play, last_play, stupid_user, melody_index, melody_changed)
+    music.update_melody(state, activated, stupid_user, melody_index, melody_changed)
     melody_changed = False
 
     if i == 0 and not stupid_user:
@@ -272,13 +268,13 @@ while True:
                     if make_exception:
                         stupid_user = True
                         activated = True
-                        play = True
+                        music.play = True
                         expire = utime.ticks_add(jetzt, 50_000)
                     else:
                         activated = False
                 else:
                     melody_index = (index + position - 2) % 7
-                    play = True
+                    music.play = True
                     activated = True
                     melody_changed = True
                 setting = 4
@@ -411,15 +407,15 @@ while True:
         if utime.ticks_diff(jetzt, last) > 0 and i == 3:
             i = 0
         last=utime.ticks_add(jetzt, sleeptime)
-        if state == 2 and play:
+        if state == 2 and music.play:
             last_pressed = utime.ticks_add(jetzt, alarm_wait)
-            play = False
+            music.play = False
     if joystick.center_pressed():
         start = utime.ticks_add(jetzt, 50_000)
     if joystick.center() and utime.ticks_diff(jetzt, start) > 0:
         machine.reset()
-    if utime.ticks_diff(jetzt, last_pressed) > 0 and not play:
-        play = True
+    if utime.ticks_diff(jetzt, last_pressed) > 0 and not music.play:
+        music.play = True
     if utime.ticks_diff(jetzt, last) > 0 and i != 3:
         i=3
 

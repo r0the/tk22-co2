@@ -4,10 +4,12 @@ import utime
 _buzzer_pin = machine.Pin(26, machine.Pin.OUT)
 _buzzer_pwm = None
 
+_last_play = True
 _melody_file = None
 
 melody_index = 7
 melodies_text = ["Axel F", "Drunken Sailor", "Stayin' Alive", "Counting Stars", "Wahn-Sing", "Rasputin", "Coffin Dance", "Pieps"]
+play = True
 
 _tempo = 60
 _timer = 0
@@ -15,7 +17,7 @@ _timer = 0
 B = 2 ** (1 / 12)
 A = 220
 def tone_to_frequency(tone):
-    return int(A * (B ** (int(tone[0]) + 3)))
+    return int(A * (B ** (int(tone) + 3)))
 
 def buzzer_off():
     global _buzzer_pwm
@@ -36,16 +38,19 @@ def play_tone(tone):
     else:
         buzzer_play(tone_to_frequency(tone[0]))
 
-def update_melody(state, activated, play, last_play, stupid_user, melody_index, melody_changed):
+def update_melody(state, activated, stupid_user, melody_index, melody_changed):
+    global _last_play
     global _melody_file
     global _tempo
     global _timer
+
     now = utime.ticks_ms()
 
     if melody_changed:
         _melody_file = None
-    if not last_play and play:
+    if not _last_play and play:
         buzzer_off()
+    _last_play = play
     if not _melody_file:
         file_name = "melody/melody" + str(melody_index) + ".txt"
         _melody_file = open(file_name, "r")
