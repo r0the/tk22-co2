@@ -338,7 +338,7 @@ Connection ~ 3700 2600
 Wire Wire Line
 	3100 3300 4300 3300
 Wire Wire Line
-	4300 2600 5150 2600
+	4300 2600 4800 2600
 Wire Wire Line
 	4300 3300 4300 2600
 Connection ~ 7300 5100
@@ -359,4 +359,25 @@ Wire Wire Line
 	6650 2600 6650 2050
 Wire Wire Line
 	6650 2050 4200 2050
+$Comp
+L Connector:Conn_01x02_Female J1
+U 1 1 60A2DD2C
+P 4800 2150
+F 0 "J1" V 4738 1962 50  0000 R CNN
+F 1 "Conn_01x02_Female" V 4647 1962 50  0000 R CNN
+F 2 "" H 4800 2150 50  0001 C CNN
+F 3 "~" H 4800 2150 50  0001 C CNN
+	1    4800 2150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4900 2350 4900 2600
+Connection ~ 4900 2600
+Wire Wire Line
+	4900 2600 5150 2600
+Wire Wire Line
+	4800 2350 4800 2600
+Connection ~ 4800 2600
+Wire Wire Line
+	4800 2600 4900 2600
 $EndSCHEMATC
