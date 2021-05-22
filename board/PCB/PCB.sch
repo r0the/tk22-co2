@@ -365,7 +365,7 @@ U 1 1 60A2DD2C
 P 4800 2150
 F 0 "J1" V 4738 1962 50  0000 R CNN
 F 1 "Conn_01x02_Female" V 4647 1962 50  0000 R CNN
-F 2 "" H 4800 2150 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 4800 2150 50  0001 C CNN
 F 3 "~" H 4800 2150 50  0001 C CNN
 	1    4800 2150
 	0    -1   -1   0   
