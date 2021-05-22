@@ -284,11 +284,9 @@ while True:
                 position = 0
         elif setting == 2:
             display.clear()
-            text = "Sleeptime: " + str(sleeptime // 1000) + " s"
-            y=hoehe // 2 - 9
-            krispplay.text(text, (breite - len(text) * 8) // 2, y)
-            text = "Snooze: " + str(alarm_wait // 1000) + " s"
-            krispplay.text(text, (breite - len(text) * 8) // 2, y + 10)
+            y = hoehe // 2 - 9
+            display.text_center("Sleeptime: " + str(sleeptime // 1000) + " s", y)
+            display.text_center("Snooze: " + str(alarm_wait // 1000) + " s", y + 10)
             if joystick.up():
                 sleeptime += 1000
             if joystick.down():
@@ -366,14 +364,10 @@ while True:
             else:
                 display.clear()
                 y = hoehe // 2 - 19
-                text = 'v' + version
-                krispplay.text(text, (breite - len(text) * 8) // 2, y)
-                text = 'product' + production_number
-                krispplay.text(text, (breite - len(text) * 8) // 2, y + 10)
-                text = product
-                krispplay.text(text, (breite - len(text) * 8) // 2, y + 20)
-                text = "TK22"
-                krispplay.text(text, (breite - len(text) * 8) // 2, y + 30)
+                display.text_center("v" + version, y)
+                display.text_center("product" + production_number, y + 10)
+                display.text_center(product, y + 20)
+                display.text_center("TK22", y + 30)
                 if joystick.center_pressed():
                     setting = 4
 

@@ -48,6 +48,9 @@ def startup(version, product):
     clear()
     krispplay.show()
 
+def text_center(text, y):
+    krispplay.text(text, (breite - len(text) * 8) // 2, y)
+
 def clear():
     krispplay.fill(0)
 
