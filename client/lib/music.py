@@ -4,10 +4,6 @@ import utime
 _buzzer_pin = machine.Pin(26, machine.Pin.OUT)
 _buzzer_pwm = None
 
-b = 2 ** (1 / 12)
-a = 220
-frequency = a
-
 melody_index = 7
 melody = "melody/melody" + str(melody_index) + ".txt"
 melody_file = None
@@ -18,6 +14,11 @@ jetzt = utime.ticks_ms()
 wecker_utime = jetzt
 
 speed = 60
+
+B = 2 ** (1 / 12)
+A = 220
+def tone_to_frequency(tone):
+    return int(A * (B ** (int(tone[0]) + 3)))
 
 def buzzer_off():
     global _buzzer_pwm
@@ -39,8 +40,7 @@ def play_tone(tone):
     if int(tone[2]) == 0:
         buzzer_off()
     else:
-        frequency = int(a * (b ** (int(tone[0]) + 3)))
-        buzzer_play(frequency)
+        buzzer_play(tone_to_frequency())
 
 def update_melody(state, activated, play, last_play, stupid_user, melody_index, melody_changed):
     global wecker_utime
