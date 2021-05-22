@@ -81,7 +81,6 @@ segment_width = 2
 
 #Geräte
 joystick = joystick.Joystick()
-leds = leds.Leds()
 krispplay = display.krispplay
 sensor = scd30.EasySCD30(i2c)
 #buzzer_pwm.freq(int(frequency))
@@ -91,9 +90,7 @@ sensor = scd30.EasySCD30(i2c)
 
 display.startup(version, product)
 # LEDs testen
-for i in range(3):
-    leds.update(i)
-    utime.sleep(1)
+leds.startup()
 krispplay.fill(0)
 krispplay.show()
 
