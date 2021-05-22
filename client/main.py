@@ -51,7 +51,6 @@ jetzt = utime.ticks_ms()
 last = utime.ticks_add(jetzt, sleeptime)
 last_pressed = utime.ticks_add(jetzt, alarm_wait)
 
-melody_index = 7
 melody_changed=False
 
 stupid_user = False
@@ -126,7 +125,7 @@ def check_password(check):
 
 def save_config():
     config = open("config.txt", "w")
-    parameters = [str(grenzwert_rot), str(grenzwert_gelb), str(activated), str(melody_index), str(alarm_wait), str(sleeptime)]
+    parameters = [str(grenzwert_rot), str(grenzwert_gelb), str(activated), str(music.melody_index), str(alarm_wait), str(sleeptime)]
     for p in parameters:
         config.write(p + "\n")
     config.close()
@@ -135,7 +134,6 @@ def load_config():
     global grenzwert_rot
     global grenzwert_gelb
     global activated
-    global melody_index
     global alarm_wait
     global sleeptime
     try:
@@ -151,7 +149,7 @@ def load_config():
             grenzwert_rot = lines[0]
             grenzwert_gelb = lines[1]
             activated = lines[2]
-            melody_index = lines[3]
+            music.melody_index = lines[3]
             alarm_wait = lines[4]
             sleeptime = lines[5]
     except OSError:
@@ -170,7 +168,7 @@ while True:
     unterschwelle_gelb = grenzwert_gelb * 0.9
     unterschwelle_rot = grenzwert_rot * 0.9
     update_state()
-    music.update_melody(state, activated, stupid_user, melody_index, melody_changed)
+    music.update_melody(state, activated, stupid_user, melody_changed)
     melody_changed = False
 
     if i == 0 and not stupid_user:
@@ -272,7 +270,7 @@ while True:
                     else:
                         activated = False
                 else:
-                    melody_index = (index + position - 2) % 7
+                    music.melody_index = (index + position - 2) % 7
                     music.play = True
                     activated = True
                     melody_changed = True
