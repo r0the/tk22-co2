@@ -29,24 +29,28 @@ miso = machine.Pin(19)
 spi = machine.SPI(1, sck=sck, mosi=mosi, miso=miso)
 
 krispplay = sh1106.SH1106_SPI(128, 64, spi, dc, res, cs)
+krispplay.rotate(True)
 
 def startup(version, product):
-    krispplay.fill(0)
-    y=hoehe//2-18
-    text="TK22"
-    krispplay.text(text, (breite-len(text)*8)//2, y)
-    text="CO2-Messgeraet"
-    krispplay.text(text, (breite-len(text)*8)//2, y+10)
-    text="v" + version
-    krispplay.text(text, (breite-len(text)*8)//2, y+20)
-    text=product
-    krispplay.text(text, (breite-len(text)*8)//2, y+30)
-    krispplay.rotate(True)
+    clear()
+    y = hoehe // 2 - 18
+    text_center("TK22", y)
+    text_center("CO2-Messgeraet", y + 10)
+    text_center("v" + version, y + 20)
+    text_center(product, y + 30)
     krispplay.show()
     time.sleep(2.5)
+    clear()
+    show()
 
-    krispplay.fill(0)
+def text_center(text, y):
+    krispplay.text(text, (breite - len(text) * 8) // 2, y)
+
+def show():
     krispplay.show()
+
+def clear():
+    krispplay.fill(0)
 
 def draw_segment(x, y, digit):
     krispplay.rect(x, y+2*segment_width+segment_length, segment_width, segment_length, digit[0])
@@ -74,7 +78,7 @@ def draw_menuline(text, pos, selected, amount):
 
 def run_stupid_user(jetzt, expire, stupid_user):
     if stupid_user and utime.ticks_diff(jetzt, expire) <= 0:
-        krispplay.fill(0)
+        clear()
         text = "stupid User"
         y = hoehe//2 - 19
         krispplay.text(text, (breite-8*len(text))//2, y)

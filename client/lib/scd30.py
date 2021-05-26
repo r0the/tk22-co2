@@ -7,7 +7,6 @@ class EasySCD30:
         self.co2 = 0.0
         self.temperature = 0
         self.humidity = 0
-        self.ready = False
         try:
             self.sensor = SCD30(i2c, 97)
             utime.sleep_ms(500)
@@ -17,8 +16,9 @@ class EasySCD30:
             utime.sleep_ms(500)
             self.sensor.soft_reset()
             utime.sleep_ms(500)
+            self.ready = True
         except SCD30.NotFoundException:
-            self.sensor = None
+            self.ready = False
 
     def read(self):
         if not self.sensor:
