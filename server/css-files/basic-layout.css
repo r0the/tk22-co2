@@ -1,13 +1,9 @@
 body {
-    margin: 0%;
-}
-
-.inline-image {
-    margin-left: 0px;
-    margin-top: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
 }
 
 nav {
-    background-color: rgb(4, 4, 161);
-    text-align: flex-start;
+  background-color: rgb(50, 50, 200);
+  display: flex;
 }
