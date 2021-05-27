@@ -116,8 +116,8 @@ def check_password(check):
     if not locked:
         return True
     else:
-        check=hashing.hash(check)
-        if password==check:
+        check = hashing.hash(check)
+        if password == check:
             return True
         else:
             return False
@@ -192,7 +192,7 @@ while True:
         if joystick.center_pressed() and m == 0:
             i = 3
     elif i == 1 and not stupid_user:
-        if setting==4:
+        if setting == 4:
             display.clear()
             draw_menuline("Grenzwerte", 0, s == 0, 4)
             draw_menuline("Alarm", 1, s == 1, 4)
@@ -206,23 +206,23 @@ while True:
             if s < 0:
                 s = 2
             if joystick.down_pressed():
-                s+=1
+                s += 1
             if joystick.up_pressed():
-                s-=1
+                s -= 1
             if joystick.center_pressed():
-                setting=s
+                setting = s
             if joystick.right_pressed() or joystick.left_pressed():
-                i=0
-        elif setting==0:
+                i = 0
+        elif setting == 0:
             display.clear()
-            krispplay.text( "Rot: " + str(grenzwert_rot) + " ppm", breite//2 - 55, 18)
-            krispplay.text( "Gelb: " + str(grenzwert_gelb) + " ppm", breite//2 - 55, 38)
+            krispplay.text( "Rot: " + str(grenzwert_rot) + " ppm", breite // 2 - 55, 18)
+            krispplay.text( "Gelb: " + str(grenzwert_gelb) + " ppm", breite // 2 - 55, 38)
             if joystick.up():
                 grenzwert_rot = int(grenzwert_rot + 1)
             if joystick.down():
                 grenzwert_rot = int(grenzwert_rot - 1)
-                if grenzwert_gelb >= 0.8*grenzwert_rot:
-                    grenzwert_gelb=int(0.8*grenzwert_rot)
+                if grenzwert_gelb >= 0.8 * grenzwert_rot:
+                    grenzwert_gelb = int(0.8 * grenzwert_rot)
             if grenzwert_rot < 500:
                 grenzwert_rot = 500
             if grenzwert_rot > 2000:
@@ -230,7 +230,7 @@ while True:
             if joystick.right():
                 grenzwert_gelb = int(grenzwert_gelb + 1)
                 if grenzwert_gelb >= 0.8*grenzwert_rot:
-                    grenzwert_rot=int(grenzwert_gelb/0.8)
+                    grenzwert_rot = int(grenzwert_gelb / 0.8)
             if joystick.left():
                 grenzwert_gelb = int(grenzwert_gelb - 1)
             if grenzwert_gelb < 400:
@@ -373,16 +373,16 @@ while True:
 
     elif i == 2 and not stupid_user:
         display.clear()
-        draw_segments(sensor.humidity, 124 - segment_length - 2*segment_width)
-        draw_segments(sensor.temperature, 4 + segment_length + 4*segment_width)
+        draw_segments(sensor.humidity, 124 - segment_length - 2 * segment_width)
+        draw_segments(sensor.temperature, 4 + segment_length + 4 * segment_width)
         krispplay.text("%", 116, 50)
-        krispplay.text("C", 2*segment_length + 6*segment_width - 4, 50)
-        krispplay.text(".", 2*segment_length + 6*segment_width - 9, 45)
+        krispplay.text("C", 2 * segment_length + 6 * segment_width - 4, 50)
+        krispplay.text(".", 2 * segment_length + 6 * segment_width - 9, 45)
         if joystick.any_pressed():
             i = 0
     elif i == 3 and not stupid_user:
         display.clear()
-        draw_segments(sensor.co2, 124 - segment_length - 2*segment_width)
+        draw_segments(sensor.co2, 124 - segment_length - 2 * segment_width)
         krispplay.text("ppm CO2", 68, 50)
         if joystick.any_pressed():
             i = 0
@@ -397,7 +397,7 @@ while True:
     if joystick.any():
         if utime.ticks_diff(jetzt, last) > 0 and i == 3:
             i = 0
-        last=utime.ticks_add(jetzt, sleeptime)
+        last = utime.ticks_add(jetzt, sleeptime)
         if state == 2 and music.play:
             last_pressed = utime.ticks_add(jetzt, alarm_wait)
             music.play = False
@@ -408,10 +408,10 @@ while True:
     if utime.ticks_diff(jetzt, last_pressed) > 0 and not music.play:
         music.play = True
     if utime.ticks_diff(jetzt, last) > 0 and i != 3:
-        i=3
+        i = 3
 
     if not done:
         load_config()
-        done=True
+        done = True
 
     display.show()

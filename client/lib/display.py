@@ -17,8 +17,8 @@ digit = [[1, 1, 1, 1, 1, 1, 0],
         [1, 1, 1, 1, 1, 1, 1],
         [0, 1, 1, 1, 1, 1, 1]]
 
-segment_length=15
-segment_width=2
+segment_length = 15
+segment_width = 2
 
 res = machine.Pin(5)
 dc = machine.Pin(4)
@@ -53,13 +53,15 @@ def clear():
     krispplay.fill(0)
 
 def draw_segment(x, y, digit):
-    krispplay.rect(x, y+2*segment_width+segment_length, segment_width, segment_length, digit[0])
-    krispplay.rect(x, y+segment_width, segment_width, segment_length, digit[1])
-    krispplay.rect(x+segment_width, y, segment_length, segment_width, digit[2])
-    krispplay.rect(x+segment_width+segment_length, y+segment_width, segment_width, segment_length, digit[3])
-    krispplay.rect(x+segment_width+segment_length, y+2*segment_width+segment_length, segment_width, segment_length, digit[4])
-    krispplay.rect(x+segment_width, y+2*(segment_width+segment_length), segment_length, segment_width, digit[5])
-    krispplay.rect(x+segment_width, y+segment_width+segment_length, segment_length, segment_width, digit[6])
+    w = segment_width
+    l = segment_length
+    krispplay.rect(x, y + 2 * w + l, w, l, digit[0])
+    krispplay.rect(x, y + w, w, l, digit[1])
+    krispplay.rect(x + w, y, l, w, digit[2])
+    krispplay.rect(x + w + l, y + w, w, l, digit[3])
+    krispplay.rect(x + w + l, y + 2 * w + l, w, l, digit[4])
+    krispplay.rect(x + w, y + 2 * (w + l), l, w, digit[5])
+    krispplay.rect(x + w, y + w + l, l, w, digit[6])
 
 def draw_segments(number, x):
     y = 10
@@ -69,23 +71,17 @@ def draw_segments(number, x):
         x = x - segment_length - 4 * segment_width
         number = number // 10
 
-
 def draw_menuline(text, pos, selected, amount):
     l = len(text) * 8
-    krispplay.text(text, (breite - l) // 2, hoehe // (amount+1) * pos + 4)
+    krispplay.text(text, (breite - l) // 2, hoehe // (amount + 1) * pos + 4)
     if selected:
-        krispplay.rect((breite - l) // 2 - 4, hoehe // (amount+1) * pos, l + 8, 16, 1)
+        krispplay.rect((breite - l) // 2 - 4, hoehe // (amount + 1) * pos, l + 8, 16, 1)
 
 def run_stupid_user(jetzt, expire, stupid_user):
     if stupid_user and utime.ticks_diff(jetzt, expire) <= 0:
         clear()
-        text = "stupid User"
-        y = hoehe//2 - 19
-        krispplay.text(text, (breite-8*len(text))//2, y)
-        text="Exception,"
-        krispplay.text(text, (breite-8*len(text))//2, y + 10)
-        text="chosen option"
-        krispplay.text(text, (breite-8*len(text))//2, y + 20)
-        text="not accepted"
-        krispplay.text(text, (breite-8*len(text))//2, y + 30)
-
+        y = hoehe // 2 - 19
+        text_center("stupid User", y)
+        text_center("Exception,", y + 10)
+        text_center("chosen option", y + 20)
+        text_center("not accepted", y + 40)
