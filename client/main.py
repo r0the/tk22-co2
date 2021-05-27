@@ -74,7 +74,6 @@ segment_length = 15
 segment_width = 2
 
 #Geräte
-joystick = joystick.Joystick()
 krispplay = display.krispplay
 sensor = scd30.EasySCD30(i2c)
 #buzzer_pwm.freq(int(frequency))
