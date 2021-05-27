@@ -7,15 +7,16 @@ body {
 .navbar {
   background-color: rgb(22, 22, 202);
   display: flex;
+  flex-direction: row;
+}
+
+.navbar-logo {
+  width: 256px;
 }
 
 .navbar-logo-link:visited {
   text-decoration: none;
   color: aliceblue;
-}
-
-.navbar-logo {
-  width: 256px;
 }
 
 .navbar-logo-link {
@@ -25,4 +26,19 @@ body {
 .navbar-logo-text {
   font-size: 1.5rem;
   vertical-align: 20px;
+}
+
+.navbar-link-container a {
+  color: aliceblue;
+  text-decoration: none;
+  padding: 15px;
+}
+
+.navbar-link-container a:visited {
+  text-decoration: none;
+
+}
+
+.right {
+  right: 10px;
 }
