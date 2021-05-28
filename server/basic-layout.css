@@ -14,33 +14,16 @@ nav {
   align-items: center;
   background-color: rgb(22, 22, 202);
   min-height: 3.25rem;
+  top: 0;
+  left: 0;
 }
 
 nav a {
   color: aliceblue;
 }
 
-.navbar-brand {
-  width: 296px;
-  min-height: 3.25rem;
-}
-
-.navbar-brand a {
-  font-size: 1.25em;
-  font-weight: 500;
-}
-
-.navbar-logo {
-  vertical-align: center;
-  height: 3.25rem;
-  width: 3.25rem;
-}
-
-.navbar-logo-text {
-  vertical-align: 1.5rem;
-}
-
-.navbar-item {
-  line-height: 1.5;
-  padding: 0.5rem 0.75rem;
+.navbar-tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
 }

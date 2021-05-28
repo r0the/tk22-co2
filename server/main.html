@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <title>Main.html</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="basic-layout.css">
+    <script src="java-script-file.js"></script>
 </head>
 <body>
     <nav>
         <div class="navbar-brand">
             <a href="main.html">
-                <img src="pictures/TK_Logo/0_TK22_LOGO_2363x2363.png" alt="TK22_LOGO_64x64" class="navbar-logo">
                 <span class="navbar-item navbar-logo-text">CO<sub>2</sub>-Sensors</span>
             </a>
         </div>
-        <div class="navbar-link-container">
-            <span class="navbar-item"><a href="data-view.html">Data</a></span>
-            <span class="navbar-item"><a href="settings-view.html">Settings</a></span>
-            <span class="navbar-item"><a href="information.html">Information</a></span>
+        <div class="navbar-tab">
+            <button class="navbar-tablinks" onclick="openCity(event, 'Data')">Data</button>
+            <button class="navbar-tablinks" onclick="openCity(event, 'Intformation')">Information</button>
+            <button class="navbar-tablinks" onclick="openCity(event, 'Settings')">Settings</button>
             <span class="navbar-item right">Login</span>
         </div>
-        
     </nav>
 </body>
 </html>
