@@ -1,3 +1,4 @@
+
 body {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   margin: 0;
@@ -13,17 +14,52 @@ nav {
   flex-direction: row;
   align-items: center;
   background-color: rgb(22, 22, 202);
-  min-height: 3.25rem;
+  height: 3.25rem;
   top: 0;
   left: 0;
 }
 
-nav a {
-  color: aliceblue;
-}
-
 .navbar-tab {
   overflow: hidden;
+  background-color: rgb(22, 22, 202);
+}
+
+.navbar-tab button {
+  color: aliceblue;
+  font-size: 1rem;
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 1rem 16px;
+  max-height: 3.25rem;
+  transition: 0.3s;
+  min-width: 3.25rem;
+}
+
+.navbar-tab button:hover {
+  color: black;
+  background-color: #ddd;
+}
+
+.navbar-tab button:active {
+  background-color: #ccc;
+}
+
+.navbar-brand button {
+  font-size: 1.25rem;
+  width: 16rem;
+}
+
+.navbar-tab .right button {
+  float: right;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
   border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  border-top: none;
+  color: black;
 }
