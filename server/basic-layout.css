@@ -33,7 +33,7 @@ nav {
   outline: none;
   cursor: pointer;
   padding: 1rem 16px;
-  max-height: 3.25rem;
+  height: 3.25rem;
   transition: 0.3s;
   min-width: 3.25rem;
 }
@@ -53,13 +53,58 @@ nav {
 }
 
 .navbar-tab .right button {
-  float: right;
+  position: absolute;
+  right: 0px;
 }
 
 .tabcontent {
   display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
   border-top: none;
   color: black;
+}
+
+aside {
+  height: 100%;
+  width: 16rem;
+  background-color: rgb(31, 31, 32);
+  color: white;
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 3.25rem;
+  left: 0;
+  overflow-x: hidden;
+  box-sizing: border-box; /*needed that the padding is included in width*/
+}
+
+.mainSection {
+  margin-left: 16rem;
+}
+
+#dataSearch {
+  width: 14.5rem;
+  margin: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.dataSearchList {
+  color: white;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dataSearchList button {
+  color: white;
+  background-color: inherit;
+  text-align: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0 1rem;
+  height: 2.5rem;
+  width: 16rem;
+}
+
+.dataSearchList button:hover {
+  background-color: rgb(21, 21, 22);
 }

@@ -1,3 +1,5 @@
+var cur_selected_sensor;
+
 function openTab(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -19,3 +21,7 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += "active";
 }
 
+function selectSensor(evt, RoomNr) {
+    var cur_selected_sensor = RoomNr;
+    document.getElementById("test").style.backgroundColor("rgb(100, 100, 100)");
+}
