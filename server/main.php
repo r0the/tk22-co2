@@ -8,6 +8,21 @@
     <script src="https://kit.fontawesome.com/8d63c9c4a4.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "schuan";
+    $dbname = "co2messen";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+
+    ?>
     <nav>
         <div class="navbar-brand navbar-tab">
             <button class="navbar-brandlinks" onclick="openTab(event, 'mainBlock')">CO<sub>2</sub>-Sensor</button>
@@ -32,45 +47,33 @@
         </div>
         <div id='dataBlock' class="tabcontent">
             <aside class="mainBlock-aside">
-                <?php
-                $servername = "localhost";
-                $username = "root";
-                $password = "schuan";
-                $dbname = "co2messen";
-
-                // Create connection
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                // Check connection
-                if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-                }
-
-                ?>
 
                 Select Room:
-                <input type="text" id="dataSearch" onkeyup="dataSearch" placeholder="Search.." title="Search for CO2-Sensor">
-
+                <input type="text" id="dataSearch" placeholder="Search.." title="Search for CO2-Sensor">
+                
                 <?php
                 $sql = "SELECT Room FROM devices";
                 $result = mysqli_query($conn, $sql);
                 ?>
                 
                 <ul class="dataSearchList">
-                    <?php while($row = mysqli_fetch_assoc($result)) { ?>
+                    <?php 
+                    if ($result->num_rows > 0) {
+                        while($row = mysqli_fetch_assoc($result)) { ?>
+                    
                     <button><li>
                         <p><?php echo $row['Room'] ?></p>
                     </li></button>
-                    <?php } ?>
+                    <?php } }
+                    else {echo "0 results";}?>
                 </ul>
 
             </aside>
             <section class="mainSection">
                 <?php
-                    $cur_room = 156;
-                    $sql = "SELECT ID, Alarm FROM devices WHERE Room=$cur_room";
-                    $result = mysqli_query($conn, $sql);
-                    echo "Alarm: " . mysqli_fetch_assoc($result)["Alarm"];
+                    if (isset($_POST['submit'])) {
+                        
+                    }
                 ?>
             </section>
         </div>
