@@ -49,7 +49,7 @@
             <aside class="mainBlock-aside">
 
                 Select Room:
-                <input type="text" id="dataSearch" onkeyup="dataSearchFunc" placeholder="Search.." >
+                <input type="text" id="dataSearch" onkeyup="dataSearchFunc()" placeholder="Search..." >
                 
                 <?php
                 $sql = "SELECT Room FROM devices";
@@ -58,10 +58,6 @@
                 
                 <ul class="dataSearchList">
                     <?php 
-                    if ($dataSearchValue = "") {
-                        $sql = "SELECT Room FROM devices WHERE Room LIKE '$dataSearchValue'" ;
-                        $result = mysqli_query($conn, $sql);
-                    }
                     if ($result->num_rows > 0) {
                         while($row = mysqli_fetch_assoc($result)) { ?>
                     
@@ -70,6 +66,7 @@
                     </li></button>
                     <?php } }
                     else {echo "0 results";}?>
+                    <button><li id="testtest"></li></button>
                 </ul>
 
             </aside>
