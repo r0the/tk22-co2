@@ -23,22 +23,18 @@ function openTab(evt, tabName) {
 
 function dataSearchFunc() {
   //document.getElementById("testtest").innerHTML = document.getElementById("dataSearch").value;
-
-    // Declare variables
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("dataSearch");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("dataSearchList");
-  button = ul.getElementsByTagName("button");
-
-    // Loop through all list items, and hide those that don't match the search query
-  for (i = 0; i < button.length; i++) {
-    a = button[i].getElementsByTagName("a").value;
-    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-      button[i].style.display = "";
-      document.getElementById("testtest").innerHTML = filter;
-    } else {
-      button[i].style.display = "none";
+  var button, filter, li;
+  filter = document.getElementById("dataSearch").value.toUpperCase();
+  sfilter = filter.toString();
+  button = document.getElementById("dataSearchList").getElementsByTagName("button");
+  for (i = 0; i++;) {
+    li = button[i].getElementsByTagName("li")[0];
+    sli = li.toString();
+    if (li.innerHTML.toUpperCase().includes("filter")) {
+      document.getElementById("test2").innerHTML = "true";
+    }
+    else {
+      document.getElementById("test2").innerHTML = "false";
     }
   }
 }
