@@ -49,7 +49,7 @@
             <aside class="mainBlock-aside">
 
                 Select Room:
-                <input type="text" id="dataSearch" placeholder="Search.." title="Search for CO2-Sensor">
+                <input type="text" id="dataSearch" onkeyup="dataSearchFunc" placeholder="Search.." >
                 
                 <?php
                 $sql = "SELECT Room FROM devices";
@@ -58,10 +58,14 @@
                 
                 <ul class="dataSearchList">
                     <?php 
+                    if ($dataSearchValue = "") {
+                        $sql = "SELECT Room FROM devices WHERE Room LIKE '$dataSearchValue'" ;
+                        $result = mysqli_query($conn, $sql);
+                    }
                     if ($result->num_rows > 0) {
                         while($row = mysqli_fetch_assoc($result)) { ?>
                     
-                    <button><li>
+                    <button value="<?php echo $row["Room"] ?>"><li>
                         <p><?php echo $row['Room'] ?></p>
                     </li></button>
                     <?php } }
@@ -70,11 +74,7 @@
 
             </aside>
             <section class="mainSection">
-                <?php
-                    if (isset($_POST['submit'])) {
-                        
-                    }
-                ?>
+                ..
             </section>
         </div>
         <div id="informationBlock" class="tabcontent">
