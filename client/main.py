@@ -30,7 +30,6 @@ start = 0
 done = False
 sleeptime = 30_000
 alarm_wait = 180_000
-activated = True
 password = "CA91ACE6F5DC0CC0323B88AA38EA72FA84A874A6"
 rooms = ["Zi049", "Zi034", "Zi156"]
 entered = ""
@@ -124,7 +123,7 @@ def check_password(check):
 
 def save_config():
     config = open("config.txt", "w")
-    parameters = [str(grenzwert_rot), str(grenzwert_gelb), str(activated), str(music.melody_index), str(alarm_wait), str(sleeptime)]
+    parameters = [str(grenzwert_rot), str(grenzwert_gelb), str(music.activated), str(music.melody_index), str(alarm_wait), str(sleeptime)]
     for p in parameters:
         config.write(p + "\n")
     config.close()
@@ -132,7 +131,6 @@ def save_config():
 def load_config():
     global grenzwert_rot
     global grenzwert_gelb
-    global activated
     global alarm_wait
     global sleeptime
     try:
@@ -147,7 +145,7 @@ def load_config():
         if len(lines) == 6:
             grenzwert_rot = lines[0]
             grenzwert_gelb = lines[1]
-            activated = lines[2]
+            music.activated = lines[2]
             music.melody_index = lines[3]
             alarm_wait = lines[4]
             sleeptime = lines[5]
@@ -167,7 +165,7 @@ while True:
     unterschwelle_gelb = grenzwert_gelb * 0.9
     unterschwelle_rot = grenzwert_rot * 0.9
     update_state()
-    music.update_melody(state, activated, stupid_user, melody_changed)
+    music.update_melody(state, stupid_user, melody_changed)
     melody_changed = False
 
     if i == 0 and not stupid_user:
@@ -263,15 +261,15 @@ while True:
                 if position == 0:
                     if make_exception:
                         stupid_user = True
-                        activated = True
+                        music.activated = True
                         music.play = True
                         expire = utime.ticks_add(jetzt, 50_000)
                     else:
-                        activated = False
+                        music.activated = False
                 else:
                     music.melody_index = (index + position - 2) % 7
                     music.play = True
-                    activated = True
+                    music.activated = True
                     melody_changed = True
                 setting = 4
                 i = 0

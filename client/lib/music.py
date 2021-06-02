@@ -10,6 +10,7 @@ _melody_file = None
 melody_index = 7
 melodies_text = ["Axel F", "Drunken Sailor", "Stayin' Alive", "Counting Stars", "Wahn-Sing", "Rasputin", "Coffin Dance", "Pieps"]
 play = True
+activated = True
 
 _tempo = 60
 _timer = 0
@@ -38,7 +39,7 @@ def play_tone(tone):
     else:
         buzzer_play(tone_to_frequency(tone[0]))
 
-def update_melody(state, activated, stupid_user, melody_changed):
+def update_melody(state, stupid_user, melody_changed):
     global _last_play
     global _melody_file
     global _tempo
