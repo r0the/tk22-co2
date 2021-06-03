@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name Items_CO2)(type KiCad)(uri "${KIPRJMOD}/needed_libraries/Items CO2/Items_CO2.pretty")(options "")(descr ""))
+)

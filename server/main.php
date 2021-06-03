@@ -60,9 +60,9 @@
                     <?php 
                     if ($result->num_rows > 0) {
                         while($row = mysqli_fetch_assoc($result)) { ?>
-                    <button value="<?php echo $row["Room"] ?>"><li>
-                        <p><?php echo $row['Room'] ?></p>
-                    </li></button>
+                            <button value="<?php echo $row["Room"] ?>"><li>
+                                <p><?php echo $row['Room'] ?></p>
+                            </li></button>
                     <?php } }
                     else {echo "0 results";}?>
                     <button value="049"><li id="testtest">049</li></button>
