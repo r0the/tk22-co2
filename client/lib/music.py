@@ -1,4 +1,5 @@
 import machine
+import lib.joystick as joystick
 import utime
 
 _buzzer_pin = machine.Pin(26, machine.Pin.OUT)
@@ -10,6 +11,9 @@ _melody_file = None
 melody_index = 7
 melodies_text = ["Axel F", "Drunken Sailor", "Stayin' Alive", "Counting Stars", "Wahn-Sing", "Rasputin", "Coffin Dance", "Pieps"]
 play = True
+activated = True
+
+alarm_wait = 180_000
 
 _tempo = 60
 _timer = 0
@@ -38,7 +42,7 @@ def play_tone(tone):
     else:
         buzzer_play(tone_to_frequency(tone[0]))
 
-def update_melody(state, activated, stupid_user, melody_changed):
+def update_melody(state, melody_changed):
     global _last_play
     global _melody_file
     global _tempo
@@ -54,7 +58,7 @@ def update_melody(state, activated, stupid_user, melody_changed):
     if not _melody_file:
         file_name = "melody/melody" + str(melody_index) + ".txt"
         _melody_file = open(file_name, "r")
-    if state != 2 or not play or not activated and not stupid_user:
+    if state != 2 or not play or not activated:
         buzzer_off()
     if utime.ticks_diff(_timer, now) <= 0 and play and state == 2 and activated:
         element = _melody_file.readline()
@@ -71,3 +75,14 @@ def update_melody(state, activated, stupid_user, melody_changed):
             elif len(element) == 1:
                 _tempo = int(element[0])
                 _timer = now
+                
+def update_snooze():
+    global alarm_wait
+    if joystick.right():
+        alarm_wait += 1000
+    if joystick.left():
+        alarm_wait -= 1000
+    if alarm_wait < 10000:
+        alarm_wait = 10000
+    if alarm_wait > 3600000:
+        alarm_wait = 3600000
