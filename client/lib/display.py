@@ -1,5 +1,6 @@
 import sh1106
 import machine
+import lib.joystick as joystick
 import time
 import utime
 
@@ -16,6 +17,8 @@ digit = [[1, 1, 1, 1, 1, 1, 0],
         [0, 1, 1, 1, 1, 0, 0],
         [1, 1, 1, 1, 1, 1, 1],
         [0, 1, 1, 1, 1, 1, 1]]
+
+sleeptime = 30_000
 
 segment_length = 15
 segment_width = 2
@@ -38,13 +41,22 @@ def startup(version, product):
     text_center("CO2-Messgeraet", y + 10)
     text_center("v" + version, y + 20)
     text_center(product, y + 30)
-    krispplay.show()
-    time.sleep(2.5)
-    clear()
     show()
+    
+def text(string, x, y):
+    krispplay.text(string, x, y)
 
-def text_center(text, y):
-    krispplay.text(text, (breite - len(text) * 8) // 2, y)
+def text_center(string, y):
+    text(string, (breite - len(string) * 8) // 2, y)
+    
+def text_rightbound(string, y):
+    text(string, breite - 8 * len(string) - 4, y)
+    
+def text_leftbound(string, y):
+    text(string, 4, y)
+    
+def rect(x, y, length, height, color):
+    krispplay.rect(x, y, length, height, color)
 
 def show():
     krispplay.show()
@@ -55,13 +67,13 @@ def clear():
 def draw_segment(x, y, digit):
     w = segment_width
     l = segment_length
-    krispplay.rect(x, y + 2 * w + l, w, l, digit[0])
-    krispplay.rect(x, y + w, w, l, digit[1])
-    krispplay.rect(x + w, y, l, w, digit[2])
-    krispplay.rect(x + w + l, y + w, w, l, digit[3])
-    krispplay.rect(x + w + l, y + 2 * w + l, w, l, digit[4])
-    krispplay.rect(x + w, y + 2 * (w + l), l, w, digit[5])
-    krispplay.rect(x + w, y + w + l, l, w, digit[6])
+    rect(x, y + 2 * w + l, w, l, digit[0])
+    rect(x, y + w, w, l, digit[1])
+    rect(x + w, y, l, w, digit[2])
+    rect(x + w + l, y + w, w, l, digit[3])
+    rect(x + w + l, y + 2 * w + l, w, l, digit[4])
+    rect(x + w, y + 2 * (w + l), l, w, digit[5])
+    rect(x + w, y + w + l, l, w, digit[6])
 
 def draw_segments(number, x):
     y = 10
@@ -71,17 +83,32 @@ def draw_segments(number, x):
         x = x - segment_length - 4 * segment_width
         number = number // 10
 
-def draw_menuline(text, pos, selected, amount):
-    l = len(text) * 8
-    krispplay.text(text, (breite - l) // 2, hoehe // (amount + 1) * pos + 4)
+def draw_menuline(string, pos, selected, amount):
+    l = len(string) * 8
+    real_y = hoehe // amount * pos + (hoehe//amount - 8) // 2
+    text(string, (breite - l) // 2, real_y)
     if selected:
-        krispplay.rect((breite - l) // 2 - 4, hoehe // (amount + 1) * pos, l + 8, 16, 1)
-
-def run_stupid_user(jetzt, expire, stupid_user):
-    if stupid_user and utime.ticks_diff(jetzt, expire) <= 0:
-        clear()
-        y = hoehe // 2 - 19
-        text_center("stupid User", y)
-        text_center("Exception,", y + 10)
-        text_center("chosen option", y + 20)
-        text_center("not accepted", y + 40)
+        rect((breite - l) // 2 - 4, real_y - 4, l + 8, 16, 1)
+        
+def about(standalone, product, production_number, version, y):
+    clear()
+    text_center("" + product, y)
+    text_center("v" + version, y + 10)
+    if standalone:
+        text_center("standalone", y + 20)
+    else:
+        text_center("online", y + 20)
+    text_center("product" + production_number, y + 30)
+    text_center("by TK22", y + 40)
+    text_center("Gymer Chilefeld", y + 50)
+    
+def update_sleeptime():
+    global sleeptime
+    if joystick.up():
+        sleeptime += 1000
+    if joystick.down():
+        sleeptime -= 1000
+    if sleeptime < 10000:
+        sleeptime = 10000
+    if sleeptime > 120000:
+        sleeptime = 120000

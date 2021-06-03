@@ -13,8 +13,8 @@ import lib.music as music
 breite = 128
 hoehe = 64
 
-version = "0.1.0_off"
-product = "proto"
+version = "0.1.1"
+product = "Spock"
 production_number = "000"
 locked = False
 standalone = True
@@ -28,33 +28,21 @@ setting = 4
 s = 0
 start = 0
 done = False
-sleeptime = 30_000
-alarm_wait = 180_000
-password = "CA91ACE6F5DC0CC0323B88AA38EA72FA84A874A6"
-rooms = ["Zi049", "Zi034", "Zi156"]
-entered = ""
-look = 0
 place = 0
-counter = 0
-room = rooms[counter]
-room_number = room.replace('Zi', '')
-
-grenzwert_rot = 1200
-unterschwelle_rot = grenzwert_rot * 0.9
-grenzwert_gelb = 850
-unterschwelle_gelb = grenzwert_gelb * 0.9
 
 state = 0
 
 jetzt = utime.ticks_ms()
-last = utime.ticks_add(jetzt, sleeptime)
-last_pressed = utime.ticks_add(jetzt, alarm_wait)
+last = utime.ticks_add(jetzt, display.sleeptime)
+last_pressed = utime.ticks_add(jetzt, music.alarm_wait)
 
-melody_changed=False
+last_co2 = 0
+last_humidity = 0
+last_temperatrue = 0
 
-stupid_user = False
-make_exception = False
-expire = jetzt
+melody_changed = False
+highest_index = len(music.melodies_text) - 1
+shown = False
 
 #Pin-Belegung
 
@@ -73,7 +61,6 @@ segment_length = 15
 segment_width = 2
 
 #Geräte
-krispplay = display.krispplay
 sensor = scd30.EasySCD30(i2c)
 #buzzer_pwm.freq(int(frequency))
 #buzzer_pwm.duty(0)
@@ -86,31 +73,15 @@ leds.startup()
 display.clear()
 display.show()
 
-
-def StupidUserException():
-    global stupid_user
-    if make_exception:
-        display.run_stupid_user(jetzt, expire, stupid_user)
-    if utime.ticks_diff(jetzt, expire) >= 0:
-        stupid_user = False
-
 def read_sensor():
     sensor.read()
 
 def update_state():
     global state
-    co2 = sensor.co2
-    if grenzwert_gelb <= co2 and state == 0:
-        state = 1
-    if grenzwert_rot <= co2 and state == 1:
-        state = 2
-    if unterschwelle_rot > co2 and state == 2:
-        state = 1
-    if unterschwelle_gelb > co2 and state == 1:
-        state = 0
+    state = leds.update_color(sensor.co2, state)
     leds.update(state)
 
-def check_password(check):
+"""def check_password(check):
     if not locked:
         return True
     else:
@@ -119,61 +90,41 @@ def check_password(check):
             return True
         else:
             return False
-    return True
+    return True"""
 
 def save_config():
     config = open("config.txt", "w")
-    parameters = [str(grenzwert_rot), str(grenzwert_gelb), str(music.activated), str(music.melody_index), str(alarm_wait), str(sleeptime)]
+    parameters = [str(leds.grenzwert_rot), str(leds.grenzwert_gelb), str(music.activated), str(music.melody_index), str(music.alarm_wait), str(display.sleeptime)]
     for p in parameters:
         config.write(p + "\n")
     config.close()
 
 def load_config():
-    global grenzwert_rot
-    global grenzwert_gelb
-    global alarm_wait
-    global sleeptime
     try:
         config = open("config.txt","r")
-        lines = []
-        for i in config.readlines():
-            try:
-                lines.append(int(i))
-            except ValueError:
-                lines.append(bool(i))
+        leds.grenzwert_rot = int(config.readline())
+        leds.grenzwert_gelb = int(config.readline())
+        music.activated = bool(config.readline())
+        music.melody_index = int(config.readline())
+        music.alarm_wait = int(config.readline())
+        display.sleeptime = int(config.readline())
         config.close()
-        if len(lines) == 6:
-            grenzwert_rot = lines[0]
-            grenzwert_gelb = lines[1]
-            music.activated = lines[2]
-            music.melody_index = lines[3]
-            alarm_wait = lines[4]
-            sleeptime = lines[5]
     except OSError:
         pass
-
-#buzzer_play(440)
-#time.sleep(2)
-
-#print(scd30.SCD30.get_temperature_offset(scd30.SCD30))
 
 while True:
     jetzt = utime.ticks_ms()
     joystick.update()
     read_sensor()
-    StupidUserException()
-    unterschwelle_gelb = grenzwert_gelb * 0.9
-    unterschwelle_rot = grenzwert_rot * 0.9
+    leds.update_unterschwellen()
     update_state()
-    music.update_melody(state, stupid_user, melody_changed)
+    music.update_melody(state, melody_changed)
     melody_changed = False
+    
+    if joystick.any():
+        shown = False
 
-    if i == 0 and not stupid_user:
-        display.clear()
-        krispplay.text(product, 4, 52)
-        draw_menuline("Luftqualitaet", 0, m == 0, 3)
-        draw_menuline("div. Messw.", 1, m == 1, 3)
-        draw_menuline("Einstellungen", 2, m == 2, 3)
+    if i == 0:
         if m > 2:
             m = 0
         if m < 0:
@@ -188,20 +139,30 @@ while True:
             i = 1
         if joystick.center_pressed() and m == 0:
             i = 3
-    elif i == 1 and not stupid_user:
-        if setting == 4:
+        if joystick.left_pressed() or joystick.right_pressed():
+            i = 4
+        if not shown:
             display.clear()
-            draw_menuline("Grenzwerte", 0, s == 0, 4)
-            draw_menuline("Alarm", 1, s == 1, 4)
-            draw_menuline("Zeiten", 2, s == 2, 4)
-            if not standalone:
-                draw_menuline("Zimmer", 3, s == 3, 4)
-            else:
-                draw_menuline("About", 3, s == 3, 4)
-            if s > 3:
+            display.text_rightbound('-' + product, hoehe - 12)
+            draw_menuline("Luftqualitaet", 0, m == 0, 4)
+            draw_menuline("div. Messw.", 1, m == 1, 4)
+            draw_menuline("Einstellungen", 2, m == 2, 4)
+            shown = True
+
+    elif i == 1:
+        if setting == 4:
+            if not shown:
+                display.clear()
+                if not standalone:
+                    draw_menuline("Zimmer", 3, s == 3, 4)
+                draw_menuline("Grenzwerte", 0, s == 0, 4 - standalone)
+                draw_menuline("Alarm", 1, s == 1, 4 - standalone)
+                draw_menuline("Zeiten", 2, s == 2, 4 - standalone)
+                shown = True
+            if s > (3 - standalone):
                 s = 0
             if s < 0:
-                s = 2
+                s = 3 - standalone
             if joystick.down_pressed():
                 s += 1
             if joystick.up_pressed():
@@ -210,39 +171,25 @@ while True:
                 setting = s
             if joystick.right_pressed() or joystick.left_pressed():
                 i = 0
+                
         elif setting == 0:
-            display.clear()
-            krispplay.text( "Rot: " + str(grenzwert_rot) + " ppm", breite // 2 - 55, 18)
-            krispplay.text( "Gelb: " + str(grenzwert_gelb) + " ppm", breite // 2 - 55, 38)
-            if joystick.up():
-                grenzwert_rot = int(grenzwert_rot + 1)
-            if joystick.down():
-                grenzwert_rot = int(grenzwert_rot - 1)
-                if grenzwert_gelb >= 0.8 * grenzwert_rot:
-                    grenzwert_gelb = int(0.8 * grenzwert_rot)
-            if grenzwert_rot < 500:
-                grenzwert_rot = 500
-            if grenzwert_rot > 2000:
-                grenzwert_rot = 2000
-            if joystick.right():
-                grenzwert_gelb = int(grenzwert_gelb + 1)
-                if grenzwert_gelb >= 0.8*grenzwert_rot:
-                    grenzwert_rot = int(grenzwert_gelb / 0.8)
-            if joystick.left():
-                grenzwert_gelb = int(grenzwert_gelb - 1)
-            if grenzwert_gelb < 400:
-                grenzwert_gelb = 400
-            if grenzwert_gelb > 1600:
-                grenzwert_gelb = 1600
+            if not shown:
+                display.clear()
+                display.text( "Rot: " + str(leds.grenzwert_rot) + " ppm", breite // 2 - 55, 18)
+                display.text( "Gelb: " + str(leds.grenzwert_gelb) + " ppm", breite // 2 - 55, 38)
+                shown = True
+            leds.update_grenzwerte()
             if joystick.center_pressed():
                 setting=4
                 save_config()
+                
         elif setting==1:
-            display.clear()
-            highest_index = len(music.melodies_text) - 1
-            draw_menuline("None", 0, position == 0, 3)
-            draw_menuline(music.melodies_text[index - 1], 1, position == 1, 3)
-            draw_menuline(music.melodies_text[index], 2, position == 2, 3)
+            if not shown:
+                display.clear()
+                draw_menuline("None", 0, position == 0, 3)
+                draw_menuline(music.melodies_text[index - 1], 1, position == 1, 3)
+                draw_menuline(music.melodies_text[index], 2, position == 2, 3)
+                shown = True
             if position > 2:
                 position = 2
             if position < 0:
@@ -259,13 +206,7 @@ while True:
                 index = 0
             if joystick.center_pressed():
                 if position == 0:
-                    if make_exception:
-                        stupid_user = True
-                        music.activated = True
-                        music.play = True
-                        expire = utime.ticks_add(jetzt, 50_000)
-                    else:
-                        music.activated = False
+                    music.activated = False
                 else:
                     music.melody_index = (index + position - 2) % 7
                     music.play = True
@@ -280,123 +221,69 @@ while True:
                 index = 1
                 position = 0
         elif setting == 2:
-            display.clear()
-            y = hoehe // 2 - 9
-            display.text_center("Sleeptime: " + str(sleeptime // 1000) + " s", y)
-            display.text_center("Snooze: " + str(alarm_wait // 1000) + " s", y + 10)
-            if joystick.up():
-                sleeptime += 1000
-            if joystick.down():
-                sleeptime -= 1000
-            if sleeptime < 10000:
-                sleeptime = 10000
-            if sleeptime > 120000:
-                sleeptime = 120000
-            if joystick.right():
-                alarm_wait += 1000
-            if joystick.left():
-                alarm_wait -= 1000
-            if alarm_wait < 10000:
-                alarm_wait = 10000
-            if alarm_wait > 3600000:
-                alarm_wait = 3600000
+            display.update_sleeptime()
+            music.update_snooze()
             if joystick.center_pressed():
                 setting = 4
                 save_config()
-        elif setting == 3:
-            if not standalone:
-                """if look==0 and locked:
-                    krispplay.fill(0)
-                    text="password:"
-                    coordinate=(breite-8*(len(text)+len(entered)))//2
-                    krispplay.text(text, coordinate, hoehe//2 - 4)
-                    if joystick.up_pressed():
-                        entered+="0"
-                    if joystick.right_pressed():
-                        entered+="1"
-                    if joystick.down_pressed():
-                        entered+="2"
-                    if joystick.left_pressed():
-                        entered+="3"
-                    for g in range(len(entered)):
-                        krispplay.text("*", coordinate+8*(len(text)+g), hoehe//2 - 4)
-                    if joystick.center_pressed():
-                        if check_password(entered):
-                            look=1
-                        else:
-                            entered=""
-                            setting=4
-
-                else:
-                    krispplay.fill(0)
-                    if joystick.down_pressed():
-                        place+=1
-                        if place==2:
-                            counter+=1
-                    elif joystick.down() and place==2 and len(rooms)>25 and not joystick.down_pressed():
-                        counter+=1
-                    if joystick.up_pressed():
-                        place-=1
-                        if place==0:
-                            counter-=1
-                    elif joystick.up() and place==0 and len(rooms)>25 and not joystick.up_pressed():
-                            counter-=1
-                    if place<0:
-                        place=0
-                    if place>2:
-                        place=2
-                    if counter<0:
-                        counter=len(rooms)-1
-                    if counter>=len(rooms):
-                        counter=0
-                    for x in range(3):
-                        draw_menuline(rooms[counter+x-2], x, place == x, 3)
-                    if joystick.center_pressed():
-                        room=rooms[counter-2+place]
-                        room_number=int(room.replace('Zi', ''))
-                        entered=[]
-                        look=0
-                        setting=4"""
-
-            else:
+            y = hoehe // 2 - 9
+            if not shown:
                 display.clear()
-                y = hoehe // 2 - 19
-                display.text_center("v" + version, y)
-                display.text_center("product" + production_number, y + 10)
-                display.text_center(product, y + 20)
-                display.text_center("TK22", y + 30)
-                if joystick.center_pressed():
-                    setting = 4
+                display.text_center("Sleeptime: " + str(display.sleeptime // 1000) + "s", y)
+                display.text_center("Snooze: " + str(music.alarm_wait // 1000) + "s", y + 10)
+                shown = True
 
-    elif i == 2 and not stupid_user:
-        display.clear()
-        draw_segments(sensor.humidity, 124 - segment_length - 2 * segment_width)
-        draw_segments(sensor.temperature, 4 + segment_length + 4 * segment_width)
-        krispplay.text("%", 116, 50)
-        krispplay.text("C", 2 * segment_length + 6 * segment_width - 4, 50)
-        krispplay.text(".", 2 * segment_length + 6 * segment_width - 9, 45)
+    elif i == 2:
+        humidity = sensor.humidity
+        temperature = sensor.temperature
+        if last_humidity != int(humidity) or last_temperature != int(temperature) or not shown:
+            display.clear()
+            display.text("%", 116, 50)
+            display.text("C", 2 * segment_length + 6 * segment_width - 4, 50)
+            display.text(".", 2 * segment_length + 6 * segment_width - 9, 45)
+            draw_segments(round(sensor.humidity), 124 - segment_length - 2 * segment_width)
+            draw_segments(round(sensor.temperature), 4 + segment_length + 4 * segment_width)
+            shown = True
+        last_humidity = int(humidity)
+        last_temperature = int(temperature)
         if joystick.any_pressed():
             i = 0
-    elif i == 3 and not stupid_user:
-        display.clear()
-        draw_segments(sensor.co2, 124 - segment_length - 2 * segment_width)
-        krispplay.text("ppm CO2", 68, 50)
+            
+    elif i == 3:
+        co2 = sensor.co2
+        if last_co2 != int(co2) or not shown:
+            display.clear()
+            draw_segments(round(sensor.co2), 124 - segment_length - 2 * segment_width)
+            display.text("ppm CO2", 68, 50)
+            shown = True
+        last_co2 = int(co2)
         if joystick.any_pressed():
             i = 0
-    elif i < 0 or i > 3:
+            
+    elif i == 4:
+        y = hoehe // 2 - 29
+        if not shown:
+            display.about(standalone, product, production_number, version, y)
+            shown = True
+        if joystick.any_pressed():
+            i = 0
+                
+    elif i < 0 or i > 4:
+        display.clear()
         if not d:
             Zeit=utime.ticks_add(jetzt, 5000)
             d = True
-        krispplay.text("ERROR", breite // 2 - 20, hoehe // 2 - 4)
+        display.text("ERROR", breite // 2 - 20, hoehe // 2 - 4)
         if utime.ticks_diff(jetzt, Zeit) >= 0:
             i = 0
             d = False
+    
     if joystick.any():
         if utime.ticks_diff(jetzt, last) > 0 and i == 3:
             i = 0
-        last = utime.ticks_add(jetzt, sleeptime)
+        last = utime.ticks_add(jetzt, display.sleeptime)
         if state == 2 and music.play:
-            last_pressed = utime.ticks_add(jetzt, alarm_wait)
+            last_pressed = utime.ticks_add(jetzt, music.alarm_wait)
             music.play = False
     if joystick.center_pressed():
         start = utime.ticks_add(jetzt, 50_000)
@@ -405,7 +292,9 @@ while True:
     if utime.ticks_diff(jetzt, last_pressed) > 0 and not music.play:
         music.play = True
     if utime.ticks_diff(jetzt, last) > 0 and i != 3:
+        shown = False
         i = 3
+        setting = 4
 
     if not done:
         load_config()
