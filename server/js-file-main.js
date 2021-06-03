@@ -21,20 +21,23 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += "active";
 }
 
-function dataSearchFunc() {
-  //document.getElementById("testtest").innerHTML = document.getElementById("dataSearch").value;
-  var button, filter, li;
-  filter = document.getElementById("dataSearch").value.toUpperCase();
-  sfilter = filter.toString();
-  button = document.getElementById("dataSearchList").getElementsByTagName("button");
-  for (i = 0; i++;) {
-    li = button[i].getElementsByTagName("li")[0];
-    sli = li.toString();
-    if (li.innerHTML.toUpperCase().includes("filter")) {
-      document.getElementById("test2").innerHTML = "true";
-    }
-    else {
-      document.getElementById("test2").innerHTML = "false";
+function getDataFromServer() {
+  var objXMLHttpRequest = new XMLHttpRequest();
+  var arr;
+  objXMLHttpRequest.onreadystatechange = function() {
+    if(objXMLHttpRequest.readyState === 4) {
+      if(objXMLHttpRequest.status === 200) {
+        alert(objXMLHttpRequest.responseText);
+        arr = this.responseText;
+        document.getElementById("test2").innerHTML = arr;
+        document.getElementById("test3").innerHTML = arr[1];
+      }
+      else {
+        alert("Error Code: " + objXMLHttpRequest.status);
+        alert('Error Message: ' + objXMLHttpRequest.statusText);
+      }
     }
   }
+  objXMLHttpRequest.open("GET", "data.php");
+  objXMLHttpRequest.send();
 }

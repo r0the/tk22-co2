@@ -70,7 +70,9 @@
 
             </aside>
             <section class="mainSection">
+                <button onclick="getDataFromServer()"></button>
                 <p id="test2"></p>
+                <p id="test3"></p>
             </section>
         </div>
         <div id="informationBlock" class="tabcontent">
