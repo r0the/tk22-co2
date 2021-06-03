@@ -13,11 +13,15 @@ import lib.music as music
 breite = 128
 hoehe = 64
 
-version = "0.1.1"
-product = "Spock"
-production_number = "000"
 locked = False
 standalone = True
+
+version_text = open('lib/version_text.txt')
+
+version = version_text.readline().replace('\n', '')
+product = version_text.readline().replace('\n', '')
+production_number = version_text.readline().replace('\n', '')
+version_text.close()
 
 i = 0
 m = 0
