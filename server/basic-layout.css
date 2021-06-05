@@ -86,14 +86,14 @@ aside {
   margin-bottom: 1rem;
 }
 
-.dataSearchList {
+#dataSearchList {
   color: white;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.dataSearchList button {
+.mainBlock-aside button {
   color: white;
   background-color: inherit;
   text-align: left;
@@ -105,7 +105,7 @@ aside {
   width: 16rem;
 }
 
-.dataSearchList button:hover {
+#dataSearchList button:hover {
   background-color: rgb(21, 21, 22);
 }
 

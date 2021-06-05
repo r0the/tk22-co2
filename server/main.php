@@ -1,28 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Main.php</title>
+    <title>Main.html</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="basic-layout.css">
     <script src="js-file-main.js"></script>
+    <link rel="stylesheet" href="basic-layout.css">
     <script src="https://kit.fontawesome.com/8d63c9c4a4.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "schuan";
-    $dbname = "co2messen";
-
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-    }
-
-    ?>
     <nav>
         <div class="navbar-brand navbar-tab">
             <button class="navbar-brandlinks" onclick="openTab(event, 'mainBlock')">CO<sub>2</sub>-Sensor</button>
@@ -40,37 +25,19 @@
                 <p>..</p>
             </aside>
             <section class="mainSection">
-                <?php
-                echo "Hello World!";
-                ?>
+                ..
             </section>
         </div>
         <div id='dataBlock' class="tabcontent">
             <aside class="mainBlock-aside">
 
                 Select Room:
-                <input type="text" id="dataSearch" onkeyup="dataSearchFunc()" placeholder="Search..." >
-                
-                <?php
-                $sql = "SELECT Room FROM devices";
-                $result = mysqli_query($conn, $sql);
-                ?>
-                
-                <ul class="dataSearchList">
-                    <?php 
-                    if ($result->num_rows > 0) {
-                        while($row = mysqli_fetch_assoc($result)) { ?>
-                            <button value="<?php echo $row["Room"] ?>"><li>
-                                <p><?php echo $row['Room'] ?></p>
-                            </li></button>
-                    <?php } }
-                    else {echo "0 results";}?>
-                    <button value="049"><li id="testtest">049</li></button>
+                <input type="text" id="dataSearch" onkeyup="dataSearchFunc()" placeholder="Search..." >                
+                <ul id="dataSearchList">
                 </ul>
 
             </aside>
             <section class="mainSection">
-                <button onclick="getDataFromServer()"></button>
                 <p id="test2"></p>
                 <p id="test3"></p>
             </section>
