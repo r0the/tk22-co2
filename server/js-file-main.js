@@ -27,14 +27,15 @@ function openTab(evt, tabName) {
     
 }
 
-function getDataFromServer(sync) {
+function getDataFromServer(sync, url, str) {
+  alert(url + "?q=" + str);
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       arrDataServer = JSON.parse(this.responseText);
     }
   };
-  xmlhttp.open("GET", "data.php", sync);
+  xmlhttp.open("GET", url + "?q=" + str, sync);
   xmlhttp.send();
 }
 
@@ -45,7 +46,7 @@ function postDataFromServer(sync) {
 function generateDataAside() {
   arrRooms = undefined;
   //alert("generateDataAside");
-  getDataFromServer(false);
+  getDataFromServer(false, "data.php", "s");
   arrRooms = arrDataServer;
   var rooms = arrRooms;
   //alert(rooms + " lol");
