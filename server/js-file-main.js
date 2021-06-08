@@ -27,36 +27,33 @@ function openTab(evt, tabName) {
     
 }
 
-function getDataFromServer(sync, url, str) {
-  alert(url + "?q=" + str);
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      arrDataServer = JSON.parse(this.responseText);
-    }
-  };
-  xmlhttp.open("GET", url + "?q=" + str, sync);
-  xmlhttp.send();
+async function getDataFromServer(url) {
+  let response = await fetch(url);
+
+  if (response.ok) { // if HTTP-status is 200-299
+    // get the response body (the method explained below)
+    let data = await response.json();
+    return JSON.parse(data);
+  } else {
+    alert("HTTP-Error: " + response.status);
+  }
 }
 
 function postDataFromServer(sync) {
-  alert("POST");
+  alert(sync);
 }
 
-function generateDataAside() {
-  arrRooms = undefined;
-  //alert("generateDataAside");
-  getDataFromServer(false, "data.php", "s");
-  arrRooms = arrDataServer;
-  var rooms = arrRooms;
-  //alert(rooms + " lol");
+async function generateDataAside() {
+  console.log("generateDataAside");
+  rooms = await getDataFromServer("data.php");
+  console.log(rooms + " lol");
   document.getElementById("test2").innerHTML = rooms;
   //create button for every element in rooms
   for (room in rooms) {
     var btn = document.createElement("button");
     btn.setAttribute("onclick", "selectButtonDataAside(" + rooms[room] + ")");
     var li = document.createElement("li");
-    li.innerHTML = rooms[room];
+    li.textContent = rooms[room];
     btn.appendChild(li);
     document.getElementById("dataSearchList").appendChild(btn);
   }
