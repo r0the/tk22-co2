@@ -10,8 +10,8 @@ a {
 }
 
 nav {
-  display: flex;
-  flex-direction: row;
+  /*display: flex;
+  flex-direction: row;*/
   align-items: center;
   background-color: rgb(22, 22, 202);
   height: 3.25rem;
@@ -22,6 +22,22 @@ nav {
 .navbar-tab {
   overflow: hidden;
   background-color: rgb(22, 22, 202);
+}
+
+.navbar-tab ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.navbar-tab li {
+	float: left;
+}
+
+.navbar-tab li button {
+	display: block;
+	padding: 8px;
 }
 
 .navbar-tab button {
@@ -50,11 +66,6 @@ nav {
 .navbar-brand button {
   font-size: 1.25rem;
   width: 16rem;
-}
-
-.navbar-tab .right button {
-  position: absolute;
-  right: 0px;
 }
 
 .tabcontent {

@@ -9,14 +9,14 @@
 </head>
 <body>
     <nav>
-        <div class="navbar-brand navbar-tab">
-            <button class="navbar-brandlinks" onclick="openTab(event, 'mainBlock')">CO<sub>2</sub>-Sensor</button>
-        </div>
         <div class="navbar-tab">
-            <button class="navbar-tablinks" onclick="openTab(event, 'dataBlock')" id="defaultOpen"><i class="far fa-list-alt"></i> Data</button>
-            <button class="navbar-tablinks" onclick="openTab(event, 'informationBlock')"><i class="fas fa-info"></i> Information</button>
-            <button class="navbar-tablinks" onclick="openTab(event, 'settingsBlock')"><i class="far fa-edit"></i> Settings</button>
-            <button class="navbar-tablinks right"><i class="fas fa-sign-in-alt"></i></button>
+			<ul>
+				<li class="navbar-brand"><button class="navbar-brandlinks navbar-brand" onclick="openTab(event, 'mainBlock')">CO<sub>2</sub>-Sensor</button></li>
+				<li><button class="navbar-tablinks" onclick="openTab(event, 'dataBlock')" id="defaultOpen"><i class="far fa-list-alt"></i> Data</button></li>
+				<li><button class="navbar-tablinks" onclick="openTab(event, 'informationBlock')"><i class="fas fa-info"></i> Information</button></li>
+				<li><button class="navbar-tablinks" onclick="openTab(event, 'settingsBlock')"><i class="far fa-edit"></i> Settings</button></li>
+				<li style="float:right" class="right"><button class="navbar-tablinks"><i class="fas fa-sign-in-alt"></i></button></li>
+			</ul>
         </div>
     </nav>
     <main>
