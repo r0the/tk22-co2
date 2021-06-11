@@ -27,16 +27,24 @@ function openTab(evt, tabName) {
     
 }
 
-async function getDataFromServer(url) {
-  let response = await fetch(url);
+async function getDataFromServer(url, postData) {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(postData),
+    headers : {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+  return await response.json()
 
-  if (response.ok) { // if HTTP-status is 200-299
+  /*
+  if (response.ok) {
     // get the response body (the method explained below)
-    let data = await response.json();
-    return JSON.parse(data);
+    let returnedData = await response.json();
+    return returnedData;
   } else {
     alert("HTTP-Error: " + response.status);
-  }
+  }*/
 }
 
 function postDataFromServer(sync) {
@@ -45,17 +53,22 @@ function postDataFromServer(sync) {
 
 async function generateDataAside() {
   console.log("generateDataAside");
-  rooms = await getDataFromServer("data.php");
-  console.log(rooms + " lol");
+  rooms = await getDataFromServer("data.php", { function: "getRoomNr", addInfo: ""});
+  console.log("Rooms: " + rooms);
   document.getElementById("test2").innerHTML = rooms;
-  //create button for every element in rooms
-  for (room in rooms) {
-    var btn = document.createElement("button");
-    btn.setAttribute("onclick", "selectButtonDataAside(" + rooms[room] + ")");
-    var li = document.createElement("li");
-    li.textContent = rooms[room];
-    btn.appendChild(li);
-    document.getElementById("dataSearchList").appendChild(btn);
+  if (document.getElementById("dataSearchList").getElementsByTagName("li").length != rooms.length) {
+    //create button for every element in rooms
+    for (room in rooms) {
+      var btn = document.createElement("button");
+      btn.setAttribute("onclick", "selectButtonDataAside(" + rooms[room] + ")");
+      var li = document.createElement("li");
+      li.textContent = rooms[room];
+      btn.appendChild(li);
+      document.getElementById("dataSearchList").appendChild(btn);
+    }
+  }
+  else {
+    document.getElementById("test3").innerHTML = "buttons already generated";
   }
 }
 

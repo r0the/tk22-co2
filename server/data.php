@@ -13,24 +13,33 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-#echo "Connected successfully";
-/*$roomNr = $_REQUEST("roomNr");
-if ($roomNr != "") {
-  $sql = "SELECT * FROM devices WHERE Room='$roomNr'";
-}*/
+$rawReceive = file_get_contents('php://input');
+$dataReceive = (array) (json_decode($rawReceive));
 
-$sql = "SELECT Room FROM devices";
-$result = $conn->query($sql);
-$list = array();
+$output = "111";
 
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-    array_push($list, $row["Room"]);
-  }
+if ($dataReceive['function'] === "getRoomNr") {
+  getRoomNr();
 }
 
-echo json_encode($list);
+function getRoomNr() {
+  global $conn;
+  $sql = "SELECT Room FROM devices";
+  $result = $conn->query($sql);
+  $list = array();
+
+  if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = mysqli_fetch_assoc($result)) {
+      array_push($list, $row["Room"]);
+    }
+  }
+  $GLOBALS['output'] =  $list;
+}
+
+echo json_encode($output);
+
+
 
 
 ?>
