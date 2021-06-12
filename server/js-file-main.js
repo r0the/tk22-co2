@@ -27,6 +27,23 @@ function openTab(evt, tabName) {
     
 }
 
+function dataSearchMenuFunc() {
+  var filter, ul, btn, li, i;
+  filter = document.getElementById("dataSearch").value.toUpperCase();
+  ul = document.getElementById("dataSearchList");
+  btn = ul.getElementsByTagName("button");
+  li = ul.getElementsByTagName("li");
+
+  for (i = 0; i < li.length; i++) {
+    if (li[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+      btn[i].style.display = "";
+    } else {
+      btn[i].style.display = "none";
+    }
+  }
+}
+
+
 async function getDataFromServer(url, postData) {
   const response = await fetch(url, {
     method: 'POST',
@@ -36,25 +53,12 @@ async function getDataFromServer(url, postData) {
     }
   })
   return await response.json()
-
-  /*
-  if (response.ok) {
-    // get the response body (the method explained below)
-    let returnedData = await response.json();
-    return returnedData;
-  } else {
-    alert("HTTP-Error: " + response.status);
-  }*/
-}
-
-function postDataFromServer(sync) {
-  alert(sync);
 }
 
 async function generateDataAside() {
-  console.log("generateDataAside");
+  //console.log("generateDataAside");
   rooms = await getDataFromServer("data.php", { function: "getRoomNr", addInfo: ""});
-  console.log("Rooms: " + rooms);
+  //console.log("Rooms: " + rooms);
   document.getElementById("test2").innerHTML = rooms;
   if (document.getElementById("dataSearchList").getElementsByTagName("li").length != rooms.length) {
     //create button for every element in rooms
@@ -72,7 +76,8 @@ async function generateDataAside() {
   }
 }
 
-function selectButtonDataAside(room) {
-  document.getElementById("test2").innerHTML = "You are looking at the data of room: ";
-  document.getElementById("test3").innerHTML = room;
+async function selectButtonDataAside(room) {
+  dataRoom = await getDataFromServer("data.php", { function: "getRoomData", addInfo: room});
+  document.getElementById("test2").innerHTML = "Room: " + dataRoom['Room'];
+  document.getElementById("test3").innerHTML = "ID: " + dataRoom['ID'];
 }

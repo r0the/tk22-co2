@@ -18,8 +18,12 @@ $dataReceive = (array) (json_decode($rawReceive));
 
 $output = "111";
 
-if ($dataReceive['function'] === "getRoomNr") {
-  getRoomNr();
+$functions = array("getRoomNr", "getRoomData");
+
+foreach ($functions as $str) {
+  if ($dataReceive['function'] === $str) {
+    $str($dataReceive['addInfo']);
+  }
 }
 
 function getRoomNr() {
@@ -37,9 +41,18 @@ function getRoomNr() {
   $GLOBALS['output'] =  $list;
 }
 
+function getRoomData($room) {
+  global $conn;
+  $sql = "SELECT * FROM devices WHERE Room=$room";
+  $result = $conn->query($sql);
+  $row = mysqli_fetch_assoc($result);
+  $GLOBALS['output'] = $row;
+}
+
+
 echo json_encode($output);
 
 
-
+$conn->close();
 
 ?>
