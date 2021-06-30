@@ -43,7 +43,6 @@ function dataSearchMenuFunc() {
   }
 }
 
-
 async function getDataFromServer(url, postData) {
   const response = await fetch(url, {
     method: 'POST',
