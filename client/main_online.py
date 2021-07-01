@@ -13,7 +13,7 @@ entered=[]
 look=0
 room=rooms[counter]
 room_number=room.replace('Zi', '')
-identity=room_number
+identity='01984697HALJFHSKLLSHDFHFJKDHSLLHSFHSFHKD'
 
 #machine.reset()
 
@@ -36,7 +36,7 @@ i = 0
 m = 0
 position = 0
 index = 0
-d = False
+#d = False
 setting = 4
 s = 0
 start = 0
@@ -49,9 +49,11 @@ jetzt = utime.ticks_ms()
 last = utime.ticks_add(jetzt, display.sleeptime)
 last_pressed = utime.ticks_add(jetzt, music.alarm_wait)
 
-last_co2 = 0
-last_humidity = 0
-last_temperatrue = 0
+co2 = 0
+humidity = 0
+temperature = 0
+
+co2_changed = 0
 
 melody_changed = False
 highest_index = len(music.melodies_text) - 1
@@ -124,8 +126,8 @@ def load_config():
         config.close()
     except OSError:
         pass
-    
-wifi.do_connect()
+
+load_config()
 
 while True:
     jetzt = utime.ticks_ms()
@@ -133,9 +135,30 @@ while True:
     read_sensor()
     leds.update_unterschwellen()
     update_state()
+    wifi.do_connect()
     wifi.data_stream(identity, sensor.co2, jetzt)
     music.update_melody(state, melody_changed)
     melody_changed = False
+    
+    last_co2 = int(co2)
+    last_humidity = int(humidity)
+    last_temperature = int(temperature)
+    co2 = sensor.co2
+    humidity = sensor.humidity
+    temperature = sensor.temperature
+    
+    if last_co2 != int(co2):
+        if co2_changed == 0:
+            start_co2 = last_co2
+        co2_changed += 1
+        
+    if co2_changed >= 5:
+        co2_changed = 0
+        if co2 - start_co2 > -10:
+            music.rising = True
+        else:
+            music.rising = False
+        
     
     if joystick.any():
         shown = False
@@ -197,6 +220,7 @@ while True:
             leds.update_grenzwerte()
             if joystick.center_pressed():
                 setting=4
+                i = 0
                 save_config()
                 
         elif setting==1:
@@ -224,7 +248,7 @@ while True:
                 if position == 0:
                     music.activated = False
                 else:
-                    music.melody_index = (index + position - 2) % 7
+                    music.melody_index = (index + position - 2) % (highest_index + 1)
                     music.play = True
                     music.activated = True
                     melody_changed = True
@@ -242,6 +266,7 @@ while True:
             if joystick.center_pressed():
                 setting = 4
                 save_config()
+                i = 0
             y = hoehe // 2 - 9
             if not shown:
                 display.clear()
@@ -306,8 +331,6 @@ while True:
                     setting=4
 
     elif i == 2:
-        humidity = sensor.humidity
-        temperature = sensor.temperature
         if last_humidity != int(humidity) or last_temperature != int(temperature) or not shown:
             display.clear()
             display.text("%", 116, 50)
@@ -316,19 +339,15 @@ while True:
             draw_segments(round(sensor.humidity), 124 - segment_length - 2 * segment_width)
             draw_segments(round(sensor.temperature), 4 + segment_length + 4 * segment_width)
             shown = True
-        last_humidity = int(humidity)
-        last_temperature = int(temperature)
         if joystick.any_pressed():
             i = 0
             
     elif i == 3:
-        co2 = sensor.co2
         if last_co2 != int(co2) or not shown:
             display.clear()
             draw_segments(round(sensor.co2), 124 - segment_length - 2 * segment_width)
             display.text("ppm CO2", 68, 50)
             shown = True
-        last_co2 = int(co2)
         if joystick.any_pressed():
             i = 0
             
@@ -368,8 +387,8 @@ while True:
         i = 3
         setting = 4
 
-    if not done:
-        load_config()
-        done = True
+    #if not done:
+        #load_config()
+        #done = True
 
     display.show()
