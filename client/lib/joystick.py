@@ -6,7 +6,11 @@ LEFT = 2
 RIGHT = 3
 UP = 4
 
-_PINS = [32, 39, 34, 36, 33]
+# Platine
+_PINS = [39, 32, 33, 34, 36]
+
+# Kabel
+# _PINS = [32, 39, 34, 36, 33]
 _COUNT = len(_PINS)
 
 _pins = []
