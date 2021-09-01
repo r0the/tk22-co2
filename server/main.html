@@ -11,10 +11,10 @@
     <nav>
         <div class="navbar-tab">
 			<ul>
-				<li class="navbar-brand"><button class="navbar-brandlinks navbar-brand" onclick="openTab(event, 'mainBlock')">CO<sub>2</sub>-Sensor</button></li>
-				<li><button class="navbar-tablinks" onclick="openTab(event, 'dataBlock')" id="defaultOpen"><i class="far fa-list-alt"></i> Data</button></li>
-				<li><button class="navbar-tablinks" onclick="openTab(event, 'informationBlock')"><i class="fas fa-info"></i> Information</button></li>
-				<li><button class="navbar-tablinks" onclick="openTab(event, 'settingsBlock')"><i class="far fa-edit"></i> Settings</button></li>
+				<li class="navbar-brand"><button class="open-tab navbar-brandlinks navbar-brand" onclick="openTabNavbar(event, 'mainBlock')">CO<sub>2</sub>-Sensor</button></li>
+				<li><button class="open-tab navbar-tablinks" onclick="openTabNavbar(event, 'dataBlock')" id="defaultOpen"><i class="far fa-list-alt"></i> Data</button></li>
+				<li><button class="open-tab navbar-tablinks" onclick="openTabNavbar(event, 'informationBlock')"><i class="fas fa-info"></i> Information</button></li>
+				<li><button class="open-tab navbar-tablinks" onclick="openTabNavbar(event, 'shopBlock')"><i class="fas fa-shopping-cart"></i></i> Shop</button></li>
 				<li style="float:right" class="right"><button class="navbar-tablinks"><i class="fas fa-sign-in-alt"></i></button></li>
 			</ul>
         </div>
@@ -31,13 +31,19 @@
         <div id='dataBlock' class="tabcontent">
             <aside class="mainBlock-aside">
 
-                Select Room:
-                <input type="text" id="dataSearch" onkeyup="dataSearchMenuFunc()" placeholder="Search..." >                
+                <!--Select Room:-->
+                <input type="text" id="dataSearch" onkeyup="dataSearchMenuFunc()" placeholder="Search Room..." >                
                 <ul id="dataSearchList">
                 </ul>
 
             </aside>
             <section class="mainSection">
+                <section class="dataBlockNavbar">
+                    <ul>
+                        <li><button class="dataBlockData">Data</button></li>
+                        <li><button class="dataBlockSettings">Settings</button></li>
+                    </ul>
+                </section>
                 <p id="test2"></p>
                 <p id="test3"></p>
             </section>
