@@ -6,7 +6,6 @@ import lib.display as display
 import lib.leds as leds
 import lib.music as music
 
-#machine.reset()
 
 #Variablen
 
@@ -309,10 +308,6 @@ while True:
         if state == 2 and music.play:
             last_pressed = utime.ticks_add(jetzt, music.alarm_wait)
             music.play = False
-    if joystick.center_pressed():
-        start = utime.ticks_add(jetzt, 50_000)
-    if joystick.center() and utime.ticks_diff(jetzt, start) > 0:
-        machine.reset()
     if utime.ticks_diff(jetzt, last_pressed) > 0 and not music.play:
         music.play = True
     if utime.ticks_diff(jetzt, last) > 0 and i != 3:
