@@ -197,3 +197,7 @@ aside {
     border: none;
     height: 2rem;
 }
+
+.dataBlockNavbar button:hover {
+    background-color: rgb(200, 200, 200);
+}
