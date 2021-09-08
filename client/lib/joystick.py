@@ -2,8 +2,8 @@ import machine
 
 CENTER = 0
 DOWN = 1
-LEFT = 2
-RIGHT = 3
+LEFT = 3
+RIGHT = 2
 UP = 4
 
 # Platine
@@ -67,4 +67,4 @@ def up_pressed():
 def update():
     for i in range(_COUNT):
         _last[i] = _current[i]
-        _current[i] = not _pins[i].value()
+        _current[i] = _pins[i].value()
