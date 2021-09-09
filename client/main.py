@@ -6,10 +6,10 @@ import lib.display as display
 import lib.leds as leds
 import lib.music as music
 
+#machine.reset()
 
 #Variablen
 
-breite = 128
 hoehe = 64
 
 locked = False
@@ -86,17 +86,6 @@ def update_state():
     state = leds.update_color(sensor.co2, state)
     leds.update(state)
 
-"""def check_password(check):
-    if not locked:
-        return True
-    else:
-        check = hashing.hash(check)
-        if password == check:
-            return True
-        else:
-            return False
-    return True"""
-
 def save_config():
     config = open("config.txt", "w")
     parameters = [str(leds.grenzwert_rot), str(leds.grenzwert_gelb), str(music.activated), str(music.melody_index), str(music.alarm_wait), str(display.sleeptime)]
@@ -140,9 +129,9 @@ while True:
             start_co2 = last_co2
         co2_changed += 1
         
-    if co2_changed >= 5:
+    if co2_changed >= 3:
         co2_changed = 0
-        if co2 - start_co2 > -10:
+        if co2 > start_co2:
             music.rising = True
         else:
             music.rising = False
@@ -202,8 +191,8 @@ while True:
         elif setting == 0:
             if not shown:
                 display.clear()
-                display.text( "Rot: " + str(leds.grenzwert_rot) + " ppm", breite // 2 - 55, 18)
-                display.text( "Gelb: " + str(leds.grenzwert_gelb) + " ppm", breite // 2 - 55, 38)
+                display.text_center( "Rot: " + str(leds.grenzwert_rot) + " ppm", 18)
+                display.text_center( "Gelb: " + str(leds.grenzwert_gelb) + " ppm", 38)
                 shown = True
             leds.update_grenzwerte()
             if joystick.center_pressed():
@@ -296,18 +285,22 @@ while True:
         if not d:
             Zeit=utime.ticks_add(jetzt, 5000)
             d = True
-        display.text("ERROR", breite // 2 - 20, hoehe // 2 - 4)
+        display.text_center("ERROR", hoehe // 2 - 4)
         if utime.ticks_diff(jetzt, Zeit) >= 0:
             i = 0
             d = False
     
     if joystick.any():
-        if utime.ticks_diff(jetzt, last) > 0 and i == 3:
-            i = 0
         last = utime.ticks_add(jetzt, display.sleeptime)
         if state == 2 and music.play:
             last_pressed = utime.ticks_add(jetzt, music.alarm_wait)
             music.play = False
+    if joystick.center_pressed():
+        start = utime.ticks_add(jetzt, 3_000)
+    if joystick.center() and utime.ticks_diff(jetzt, start) > 0:
+        display.reset()
+        utime.sleep(2)
+        machine.reset()
     if utime.ticks_diff(jetzt, last_pressed) > 0 and not music.play:
         music.play = True
     if utime.ticks_diff(jetzt, last) > 0 and i != 3:
@@ -320,3 +313,4 @@ while True:
         #done = True
 
     display.show()
+

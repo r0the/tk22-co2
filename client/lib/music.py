@@ -12,8 +12,9 @@ melody_index = 7
 melodies_text = ["Axel F", "Drunken Sailor", "Stayin' Alive", "Counting Stars", "Wahn-Sing", "Rasputin", "Coffin Dance", "Pieps"]
 play = True
 activated = True
+rising = True
 
-alarm_wait = 180_000
+alarm_wait = 30_000
 
 _tempo = 60
 _timer = 0
@@ -34,7 +35,7 @@ def buzzer_play(freq):
     if not _buzzer_pwm:
         _buzzer_pwm = machine.PWM(_buzzer_pin)
     _buzzer_pwm.freq(freq)
-    _buzzer_pwm.duty(1)
+    _buzzer_pwm.duty(512)
 
 def play_tone(tone):
     if int(tone[2]) == 0:
@@ -58,9 +59,9 @@ def update_melody(state, melody_changed):
     if not _melody_file:
         file_name = "melody/melody" + str(melody_index) + ".txt"
         _melody_file = open(file_name, "r")
-    if state != 2 or not play or not activated:
+    if state != 2 or not play or not activated or not rising:
         buzzer_off()
-    if utime.ticks_diff(_timer, now) <= 0 and play and state == 2 and activated:
+    if utime.ticks_diff(_timer, now) <= 0 and state == 2 and activated and play and rising:
         element = _melody_file.readline()
         element = element.replace('\n', '')
         element = element.split(' ')

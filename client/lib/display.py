@@ -102,6 +102,11 @@ def about(standalone, product, production_number, version, y):
     text_center("by TK22", y + 40)
     text_center("Gymer Chilefeld", y + 50)
     
+def reset():
+    clear()
+    text_center('resetting...', hoehe // 2 - 4)
+    show()
+    
 def update_sleeptime():
     global sleeptime
     if joystick.up():
