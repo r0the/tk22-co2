@@ -1,0 +1,109 @@
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <title>SECtwo</title>
+  <link rel="stylesheet" href="style-sheet.css">
+  <!-- Boxicons CDN link -->
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <script src="java-script.js"></script> -->
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo_content">
+      <div class="logo">
+        <i class='bx bxl-c-plus-plus'></i>
+        <div class="logo_name">SECtwo</div>
+      </div>
+      <i class='bx bx-menu' id="btn"></i>
+    </div>
+    <ul class="nav_list">
+      <li>
+        <i class='bx bx-search' ></i>
+        <input type="text" placeholder="Search...">
+        <span class="tooltip">Search</span>
+      </li>
+      <li>
+        <a id="defaultOpen" onclick="openTabSidebar(event, 'analytics')">
+          <i class='bx bxs-bar-chart-alt-2'></i>
+          <span class="links_name">Analytics</span>
+        </a>
+        <span class="tooltip">Analytics</span>
+      </li>
+      <li>
+        <a onclick="openTabSidebar(event, 'saved')">
+          <i class='bx bx-heart' ></i>
+          <span class="links_name">Saved</span>
+        </a>
+        <span class="tooltip">Saved</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-cart-alt' ></i>
+          <span class="links_name">Shop</span>
+        </a>
+        <span class="tooltip">Shop</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-cog' ></i>
+          <span class="links_name">Settings</span>
+        </a>
+        <span class="tooltip">Settings</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-user' ></i>
+          <span class="links_name">User</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+    <div class="profile_content">
+      <div class="profile">
+        <div class="profile_details">
+          <img src="logo.png" alt="">
+          <div class="name_job">
+            <div class="name">Ian Wimmer</div>
+            <div class="job">Student</div>
+          </div>
+        </div>
+        <i class='bx bx-log-out' id="log_out"></i>
+      </div>
+    </div>
+  </div>
+  <div class="home_content">
+    <div class="tabContent analytics active">
+      <div class="analytics_side">
+        <ul id="analytics_ul">
+          <li class="sidebar_title">
+            Analytics
+          </li>
+          <li>
+            <i class='bx bx-search' ></i>
+            <input id="analytics_search" type="text" onkeyup="searchAnalyticsAside()" placeholder="Search...">
+          </li>
+          <!--
+          <li>
+            <a onclick="selectAnalyticsDataAside(049)">
+              <i class='bx bxs-microchip'></i>
+              <span>049</span>
+            </a>
+          </li>
+          -->
+        </ul>
+      </div>
+      <div class="analytics_main">
+        <div id="room"></div>
+        <div id="id"></div>
+      </div>
+    </div>
+    <div class="tabContent saved">
+      <h1>Saved</h1>
+    </div>
+  </div>
+
+  <script src="java-script.js"></script>
+
+</body>
+</html>
